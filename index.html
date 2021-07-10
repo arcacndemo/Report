@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"> 
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+		<title>IAST VulnApp Report</title>
+		<meta name="description" content="IASP Vulnerable Report" />
+		<meta name="keywords" content="nested, accordion, simple, vertical, web development, css3, javascript" />
+		<link rel="shortcut icon" href="../favicon.ico">
+		<link rel="stylesheet" type="text/css" href="css/default.css" />
+		<link rel="stylesheet" type="text/css" href="css/component.css" />
+		<link rel="stylesheet" type="text/css" href="css/codemirror.css" />
+		<link rel="stylesheet" type="text/css" href="css/mergely.css" />
+
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+		<script src="js/jquery-3.3.1.min.js"></script>
+		<script src="js/jquery.cbpNTAccordion.min.js"></script>
+		<script src="js/customtab.js"></script>
+		<script src="js/modernizr.custom.js"></script>
+		<script src="js/angular.min.js"></script>
+		<script src="js/codemirror.js"></script>
+		<script src="js/searchcursor.js"></script>	
+		<script src="js/mergely.js"></script>
+		<script src="js/codediff-mergely.js"></script>		
+		<script src="data.json"></script>
+	</head>
+	<script type="text/javascript">
+		//$(document).ready(
+		//codeDiffMerge()
+		//);
+	</script>	
+	<body ng-app="myapp" ng-controller="ReportObject">
+		<div class="container">
+			<header class="clearfix">
+				
+				<h1 ng-bind="data.project.name" style="text-align: center;"></h1>
+				
+			</header>	
+			<div class="main" id="report">
+				<ul id="cbp-ntaccordion" class="cbp-ntaccordion">
+					<li>
+						<h3 class="cbp-nttrigger">ARC Supported Issues</h3>
+						<div class="cbp-ntcontent">
+							
+							<ul class="cbp-ntsubaccordion" >
+								<li ng-repeat="d in data.project.supported">
+									<h4 class="cbp-nttrigger">{{d.name}}</h4>
+									<div class="cbp-ntcontent">
+										<!-- Tab links -->
+										<div class="tab">
+										  <button class="tablinks" ng-click="openTab($event, 'RemediatedCode'+($index+10))">Remediation </button>
+										  <button class="tablinks" ng-click="openTab($event, 'Mitigation'+($index+10))">Mitigation</button>
+										  
+										</div>
+										<!-- Tab content -->
+										<div id="RemediatedCode{{$index+10}}" class="tabcontent">
+										<ul class="cbp-ntsubaccordion" ng-repeat="row in d.issue.files">
+										<h4 class="cbp-nttrigger">File: {{row.file}}</h4>
+										<li ng-repeat="dr in row.items">
+											<a href ng-click="codeDiffMerge((dr.id),(dr.originalCode),(dr.remediatedCode))">Issue ID: {{dr.id}}</a>		
+											<!--<div class="cbp-ntcontent">
+												<div id="code diff" class="code-diff">
+													
+													<div id="DFRemediatedCode{{$index+10}}" class="textAreaColumn">
+														<div>
+															<span>Original Code</span>
+															<textarea readonly>{{dr.originalCode.join('\n')}}</textarea>
+														</div>
+														<div>
+															<span>Remediated Code</span>
+															<textarea readonly>{{dr.remediatedCode.join('\n')}}</textarea>
+														</div>
+													</div> 
+												</div>												
+											</div>-->
+												<div id="mergely{{dr.id}}">
+												</div>
+										</li>
+										</ul>
+										</div>
+										<div id="Mitigation{{$index+10}}" class="tabcontent">
+										  
+										</div>
+									</div>
+								</li>	
+							</ul>
+						</div>
+					</li>
+					<li>
+						<h3 class="cbp-nttrigger">ARC not Supported Issues</h3>
+						<div class="cbp-ntcontent">
+							<ul class="cbp-ntsubaccordion">
+								<li ng-repeat="d in data.project.unsupported">
+									<h4 class="cbp-nttrigger">{{d.name}}</h4>
+									<div class="cbp-ntcontent">
+										<!-- Tab links -->
+										<div class="tab">
+										  <button class="tablinks" ng-click="openTab(event, 'NSRemediation'+$index)">Remediation</button>
+										  <button class="tablinks" ng-click="openTab(event, 'NSMitigation'+$index)">Mitigation</button>
+										  <button class="tablinks" ng-click="openTab(event, 'NSIssueList'+$index)">Issue List</button>
+										  
+										</div>
+										<!-- Tab content -->
+										<div id="NSRemediation{{$index}}" class="tabcontent">
+											<ul class="cbp-ntsubaccordion">
+												<li>
+												<p>Remediation data goes here</p>
+												</li>
+											</ul>
+										</div>
+										<div id="NSMitigation{{$index}}" class="tabcontent">
+										  <ul class="cbp-ntsubaccordion">
+												<li>
+												<p>Mitigation data goes here</p>
+												</li>
+											</ul>
+										</div>
+										<div id="NSIssueList{{$index}}" class="tabcontent">
+										  <ul class="cbp-ntsubaccordion">
+										<li>
+											<h4 class="cbp-nttrigger">Issue ID: IN00005</h4>
+											<div class="cbp-ntcontent">
+												<div id="code diff" class="code-diff">
+													
+													<div class="textAreaColumn">
+														<div>
+															<span>Code Issue</span>
+															<textarea readonly>Content goes here</textarea>
+														</div>
+													</div> 
+												</div>
+											</div>
+										</li>
+										</ul>
+										</div>
+									</div>
+								</li>
+							</ul>
+						</div>
+					</li>
+					<li>
+						<h3 class="cbp-nttrigger">Remediation Failed</h3>
+						<div class="cbp-ntcontent">
+							<ul class="cbp-ntsubaccordion">
+								<li>
+									<h4 class="cbp-nttrigger">Unsupported SQL Injection</h4>
+									<div class="cbp-ntcontent">
+										<!-- Tab links -->
+										<div class="tab">
+										  <button class="tablinks" onclick="openTab(event, 'Remediation Data1')">Remediation</button>
+										  <button class="tablinks" onclick="openTab(event, 'Mitigation Data3')">Mitigation</button>
+										  <button class="tablinks" onclick="openTab(event, 'Issue List1')">Issue List</button>
+										  
+										</div>
+										<!-- Tab content -->
+										<div id="Remediation Data1" class="tabcontent">
+											<ul class="cbp-ntsubaccordion">
+												<li>
+												<p>Remediation data goes here</p>
+												</li>
+											</ul>
+										</div>
+										<div id="Mitigation Data3" class="tabcontent">
+										  <ul class="cbp-ntsubaccordion">
+												<li>
+												<p>Mitigation data goes here</p>
+												</li>
+											</ul>
+										</div>
+										<div id="Issue List1" class="tabcontent">
+										  <ul class="cbp-ntsubaccordion">
+										<li>
+											<h4 class="cbp-nttrigger">Issue ID: IN00006</h4>
+											<div class="cbp-ntcontent">
+												<div id="code diff" class="code-diff">
+													
+													<div class="textAreaColumn">
+														<div>
+															<span>Code Issue</span>
+															<textarea readonly>Content goes here</textarea>
+														</div>
+													</div> 
+												</div>
+											</div>
+										</li>
+										</ul>
+										</div>
+									</div>
+								</li>
+							</ul>
+						</di
+						
+					</li>
+				</ul>
+			</div>
+		</div>
+		
+		<script>
+			$( function() {
+				/*
+				- how to call the plugin:
+				$( selector ).cbpNTAccordion( [options] );
+				- destroy:
+				$( selector ).cbpNTAccordion( 'destroy' );
+				*/
+
+				$( '#cbp-ntaccordion' ).cbpNTAccordion();
+
+			} );
+		</script>
+	</body>
+	<script>
+		var app = angular.module("myapp", []);
+			app.controller("ReportObject", function($timeout, $scope) {				
+				$scope.data = jsonData;	
+				$scope.openTab = openTab;
+				function openTab(evt, cityName) {
+			// Declare all variables
+					var i, tabcontent, tablinks;
+
+					  // Get all elements with class="tabcontent" and hide them
+					  tabcontent = document.getElementsByClassName("tabcontent");
+					  for (i = 0; i < tabcontent.length; i++) {
+						tabcontent[i].style.display = "none";
+					  }
+
+					  // Get all elements with class="tablinks" and remove the class "active"
+					  tablinks = document.getElementsByClassName("tablinks");
+					  for (i = 0; i < tablinks.length; i++) {
+						tablinks[i].className = tablinks[i].className.replace(" active", "");
+					  }
+
+					  // Show the current tab, and add an "active" class to the button that opened the tab
+					  document.getElementById(cityName).style.display = "block";
+					  evt.currentTarget.className += " active";
+					  //codeDiffMerge();
+				}	
+				$scope.codeDiffMerge=codeDiffMerge;
+				function codeDiffMerge(index,originalcode,remediatedcode) {
+					var i, mergelycontent, mergelyfullscreen,testvar;
+					originalcode = originalcode.join('\n');
+					remediatedcode = remediatedcode.join('\n');
+					//mergelycontent = document.getElementsByClassName("mergelydiff");
+					testvar = "mergely"+(index);
+					mergelyfullscreen = document.getElementById(testvar);
+					//for(i = 1; i < mergelycontent.length; i++) {
+							$('#mergely'+index).mergely({
+								license: 'lgpl',
+								cmsettings: {
+									readOnly: true
+								},
+								width: 'auto',
+								height: '400px',
+								lhs: function(setValue) {
+									setValue(originalcode);
+								},
+								rhs: function(setValue) {
+									setValue(remediatedcode);
+								}
+							});
+						//}
+					//document.getElementById(testvar).style.position="static";
+					//document.getElementById(testvar).style.width="1263.33px";
+					//document.getElementById(testvar).style.height="346px";
+					
+				}
+		});
+	</script>
+</html>
