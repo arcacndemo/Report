@@ -40,12 +40,12 @@
 			<div class="main" id="report">
 				<ul id="cbp-ntaccordion" class="cbp-ntaccordion">
 					<li>
-						<h3 class="cbp-nttrigger">ARC Supported Issues</h3>
+						<h3 class="cbp-nttrigger">Successfully remediated items: {{issueCounts.supported}}</h3>
 						<div class="cbp-ntcontent">
 							
 							<ul class="cbp-ntsubaccordion" >
-								<li ng-repeat="d in data.project.supported">
-									<h4 class="cbp-nttrigger">{{d.name}}</h4>
+								<li ng-repeat="(k,d) in data.project.supported">
+									<h4 class="cbp-nttrigger">{{k}}</h4>
 									<div class="cbp-ntcontent">
 										<!-- Tab links -->
 										<div class="tab">
@@ -88,17 +88,17 @@
 						</div>
 					</li>
 					<li>
-						<h3 class="cbp-nttrigger">ARC not Supported Issues</h3>
+						<h3 class="cbp-nttrigger">Currently unsupported items: {{issueCounts.unsupported}}</h3>
 						<div class="cbp-ntcontent">
 							<ul class="cbp-ntsubaccordion">
-								<li ng-repeat="d in data.project.unsupported">
-									<h4 class="cbp-nttrigger">{{d.name}}</h4>
+								<li ng-repeat="(k,d) in data.project.unsupported">
+									<h4 class="cbp-nttrigger">{{k}}</h4>
 									<div class="cbp-ntcontent">
 										<!-- Tab links -->
 										<div class="tab">
-										  <button class="tablinks" ng-click="openTab(event, 'NSRemediation'+$index)">Remediation</button>
-										  <button class="tablinks" ng-click="openTab(event, 'NSMitigation'+$index)">Mitigation</button>
-										  <button class="tablinks" ng-click="openTab(event, 'NSIssueList'+$index)">Issue List</button>
+										  <button class="tablinks" ng-click="openTab($event, 'NSRemediation'+$index)">Remediation</button>
+										  <button class="tablinks" ng-click="openTab($event, 'NSMitigation'+$index)">Mitigation</button>
+										  <button class="tablinks" ng-click="openTab($event, 'NSIssueList'+$index)">Issue List</button>
 										  
 										</div>
 										<!-- Tab content -->
@@ -140,7 +140,7 @@
 						</div>
 					</li>
 					<li>
-						<h3 class="cbp-nttrigger">Remediation Failed</h3>
+						<h3 class="cbp-nttrigger">Failed remediation items: {{issueCounts.failed}}</h3>
 						<div class="cbp-ntcontent">
 							<ul class="cbp-ntsubaccordion">
 								<li>
@@ -148,9 +148,9 @@
 									<div class="cbp-ntcontent">
 										<!-- Tab links -->
 										<div class="tab">
-										  <button class="tablinks" onclick="openTab(event, 'Remediation Data1')">Remediation</button>
-										  <button class="tablinks" onclick="openTab(event, 'Mitigation Data3')">Mitigation</button>
-										  <button class="tablinks" onclick="openTab(event, 'Issue List1')">Issue List</button>
+										  <button class="tablinks" onclick="openTab($event, 'Remediation Data1')">Remediation</button>
+										  <button class="tablinks" onclick="openTab($event, 'Mitigation Data3')">Mitigation</button>
+										  <button class="tablinks" onclick="openTab($event, 'Issue List1')">Issue List</button>
 										  
 										</div>
 										<!-- Tab content -->
@@ -215,6 +215,11 @@
 			app.controller("ReportObject", function($timeout, $scope) {				
 				$scope.data = jsonData;	
 				$scope.openTab = openTab;
+				$scope.issueCounts = {
+					"supported": Object.keys(jsonData.project.supported).length,
+					"unsupported": Object.keys(jsonData.project.unsupported).length,
+					"failed": Object.keys(jsonData.project.failed).length
+				}
 				function openTab(evt, cityName) {
 			// Declare all variables
 					var i, tabcontent, tablinks;
