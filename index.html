@@ -49,11 +49,11 @@
 									<div class="cbp-ntcontent">
 										<!-- Tab links -->
 										<div class="tab">
-										  <button class="tablinks" ng-click="openTab($event, 'RemediatedCode'+($index+10))">Remediation </button>
-										  <button class="tablinks" ng-click="openTab($event, 'Mitigation'+($index+10))">Mitigation</button>
+										  <button class="tablinks" ng-click="openTab($event, 'RemediatedCode'+($index))">Remediation </button>
+										  <button class="tablinks" ng-click="openTab($event, 'Mitigation'+($index))">Mitigation</button>
 										</div>
 										<!-- Tab content -->
-										<div id="RemediatedCode{{$index+10}}" class="tabcontent">
+										<div id="RemediatedCode{{$index}}" class="tabcontent">
 										<ul class="cbp-ntsubaccordion" ng-repeat="row in d.files">
 										<h4 class="cbp-nttrigger">File: {{row.file}}</h4>
 										<li ng-repeat="dr in row.items">
@@ -63,7 +63,7 @@
 										</li>
 										</ul>
 										</div>
-										<div id="Mitigation{{$index+10}}" class="tabcontent">
+										<div id="Mitigation{{$index}}" class="tabcontent">
 										  
 										</div>
 										
@@ -133,27 +133,27 @@
 									<div class="cbp-ntcontent">
 										<!-- Tab links -->
 										<div class="tab">
-										  <button class="tablinks" onclick="openTab($event, 'Remediation Data1')">Remediation</button>
-										  <button class="tablinks" onclick="openTab($event, 'Mitigation Data3')">Mitigation</button>
-										  <button class="tablinks" onclick="openTab($event, 'Issue List1')">Issue List</button>
+										  <button class="tablinks" onclick="openTab($event, 'F_Remediation')">Remediation</button>
+										  <button class="tablinks" onclick="openTab($event, 'F_Mitigation')">Mitigation</button>
+										  <button class="tablinks" onclick="openTab($event, 'F_IssueList')">Issue List</button>
 										  
 										</div>
 										<!-- Tab content -->
-										<div id="Remediation Data1" class="tabcontent">
+										<div id="F_Remediation" class="tabcontent">
 											<ul class="cbp-ntsubaccordion">
 												<li>
 												<p>Remediation data goes here</p>
 												</li>
 											</ul>
 										</div>
-										<div id="Mitigation Data3" class="tabcontent">
+										<div id="F_Mitigation" class="tabcontent">
 										  <ul class="cbp-ntsubaccordion">
 												<li>
 												<p>Mitigation data goes here</p>
 												</li>
 											</ul>
 										</div>
-										<div id="Issue List1" class="tabcontent">
+										<div id="F_IssueList" class="tabcontent">
 										  <ul class="cbp-ntsubaccordion">
 										<li>
 											<h4 class="cbp-nttrigger">Issue ID: IN00006</h4>
