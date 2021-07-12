@@ -44,7 +44,7 @@
 						<div class="cbp-ntcontent">
 							
 							<ul class="cbp-ntsubaccordion" >
-								<li ng-repeat="(k,d) in data.project.supported">
+								<li ng-repeat="(k,d) in data.project.supported" style="border-bottom: 1px solid #ddd">
 									<h4 class="cbp-nttrigger">{{k}}</h4>
 									<div class="cbp-ntcontent">
 										<!-- Tab links -->
@@ -56,11 +56,12 @@
 										<div id="RemediatedCode{{$index}}" class="tabcontent">
 										<ul class="cbp-ntsubaccordion" ng-repeat="row in d.files">
 										<h4 class="cbp-nttrigger">File: {{row.file}}</h4>
-										<li ng-repeat="dr in row.items">
+										<li ng-repeat="dr in row.items" style="border-bottom: 1px solid #ddd">
 											<a href ng-click="codeDiffMerge((dr.id),(dr.originalCode),(dr.remediatedCode))">Issue ID: {{dr.id}}</a>		
 											<div id="mergely{{dr.id}}">
 											</div>
 										</li>
+										<br />
 										</ul>
 										</div>
 										<div id="Mitigation{{$index}}" class="tabcontent">
@@ -76,7 +77,7 @@
 						<h3 class="cbp-nttrigger">Currently unsupported items: {{issueCounts.unsupported}}</h3>
 						<div class="cbp-ntcontent">
 							<ul class="cbp-ntsubaccordion">
-								<li ng-repeat="(k,d) in data.project.unsupported">
+								<li ng-repeat="(k,d) in data.project.unsupported" style="border-bottom: 1px solid #ddd">
 									<h4 class="cbp-nttrigger">{{k}}</h4>
 									<div class="cbp-ntcontent">
 										<!-- Tab links -->
