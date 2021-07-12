@@ -7,27 +7,35 @@
 
     <title>Unsupported issue details</title>
 
-    <meta name="description" content="Source code generated using layoutit.com">
-    <meta name="author" content="LayoutIt!">
+    <meta name="description" content="">
+    <meta name="author" content="">
 
     <link href="css/bootstrap.min.css" rel="stylesheet" />
 	<link rel="stylesheet" href="css/codemirror.css" />
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.css" />
+	<script src="js/angular.min.js"></script>
 	<script src="js/codemirror.js"></script>
 	<script src="mode/javascript/javascript.js"></script>
 	<script src="js/autorefresh.js"></script>
 	
 	<link href="css/unsupported_styles.css" res="stylesheet" />
+	<script src="data.json"></script>
+
+	<script language="javascript">
+
+	</script>
+
   </head>
-  <body>
+
+  <body ng-app="myapp" ng-controller="ReportObject">
   
-    <div class="container-fluid">
+    <div class="container-fluid" style="margin-top: 20px;">
 		<div class="row">
 			<div class="col-md-12">
 				<div style="margin-bottom: 20px;">
 					<!-- header -->
 					<div class="heading">
-						<h1>Command Injection</h1>
+						<h1 ng-bind="issueName"></h1>
 					</div>  
 					<!-- header -->
 				</div>
@@ -49,31 +57,17 @@
 				  
 				  <div class="tab-content" id="myTabContent"  style="margin:20px">
 					<div class="tab-pane fade active show" id="faq" role="tabpanel" aria-labelledby="faq-tab">
-						<div><h5>Question 01</h5>
-						<div class="post-main-info">
-							<p class="parent-p">Q: The application must have cookies set and accessible by JavaScript. This will require a lot of changes to be implemented. Is it really needed?
+						<div ng-repeat="faq in faqs"><h5>Question {{$index}}</h5>
+							<div class="post-main-info">
+								<p class="parent-p">Q: {{faq.question}}</p>
+								<p class="parent-p">A: {{faq.answer}}</p>	
+							</div>
+							<div>&nbsp;</div>
+						</div>
+						<div class="post-main-info" ng-if="faqs.length == 0;">
+							<p style="text-align: center;">
+							No data available
 							</p>
-							<p class="parent-p">A: Some regulations (e.g., The General Data Privacy Regulation (GDPR) in the European Union; The ePrivacy Directive in the EU; The California Consumer Privacy Act) require to notify users of the cookies in use by the web site and to protect user information inside cookies.
-							</p>	
-						</div>
-						</div>
-						<div>&nbsp;</div>
-						<div><h5>Question 02</h5>
-						<div class="post-main-info">
-							<p class="parent-p">Q: The application must have cookies set and accessible by JavaScript. This will require a lot of changes to be implemented. Is it really needed?
-							</p>
-							<p class="parent-p">A: Some regulations (e.g., The General Data Privacy Regulation (GDPR) in the European Union; The ePrivacy Directive in the EU; The California Consumer Privacy Act) require to notify users of the cookies in use by the web site and to protect user information inside cookies.
-							</p>	
-						</div>
-						</div>
-						<div>&nbsp;</div>
-						<div><h5>Question 03</h5>
-						<div class="post-main-info">
-							<p class="parent-p">Q: The application must have cookies set and accessible by JavaScript. This will require a lot of changes to be implemented. Is it really needed?
-							</p>
-							<p class="parent-p">A: Some regulations (e.g., The General Data Privacy Regulation (GDPR) in the European Union; The ePrivacy Directive in the EU; The California Consumer Privacy Act) require to notify users of the cookies in use by the web site and to protect user information inside cookies.
-							</p>	
-						</div>	
 						</div>
 					</div>
 					<div class="tab-pane fade" id="remediation" role="tabpanel" aria-labelledby="remediation-tab">
@@ -655,6 +649,33 @@ Linux:
 
 	<script>
 	
+	var app = angular.module("myapp", []);
+			app.controller("ReportObject", function($timeout, $scope) {				
+				//$scope.data = jsonData;	
+
+				var url = new URL(window.location.href);
+				_issueName = url.searchParams.get("vuln");
+				$scope.issueName = _issueName;
+				
+				$scope.faqs = [];
+
+				faqsObj = jsonData.project.unsupported[_issueName].remediation.remediation.faqs;
+				
+				if(faqsObj != null){
+					if (isArray(faqsObj.faq)){
+						$scope.faqs = faqsObj.faq;
+					}else{
+						$scope.faqs.push(faqsObj.faq);
+					}
+				}
+
+	});
+
+
+	function isArray(what) {
+    	return Object.prototype.toString.call(what) === '[object Array]';
+	}
+
 		var textAreaWhitelist = ["message"]
 	
 		function scrub(sourceText, valueToScrub){
