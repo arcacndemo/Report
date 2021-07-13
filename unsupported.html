@@ -13,17 +13,13 @@
     <link href="css/bootstrap.min.css" rel="stylesheet" />
 	<link rel="stylesheet" href="css/codemirror.css" />
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.css" />
+	<link rel="stylesheet" href="css/unsupported_styles.css" />
+
 	<script src="js/angular.min.js"></script>
 	<script src="js/codemirror.js"></script>
 	<script src="mode/javascript/javascript.js"></script>
 	<script src="js/autorefresh.js"></script>
-	
-	<link href="css/unsupported_styles.css" res="stylesheet" />
 	<script src="data.json"></script>
-
-	<script language="javascript">
-
-	</script>
 
   </head>
 
@@ -57,10 +53,10 @@
 				  
 				  <div class="tab-content" id="myTabContent"  style="margin:20px">
 					<div class="tab-pane fade active show" id="faq" role="tabpanel" aria-labelledby="faq-tab">
-						<div ng-repeat="faq in faqs"><h5>Question {{$index}}</h5>
+						<div ng-repeat="faq in faqs">
 							<div class="post-main-info">
-								<p class="parent-p">Q: {{faq.question}}</p>
-								<p class="parent-p">A: {{faq.answer}}</p>	
+								<p class="parent-p" style="border-bottom: 1px solid #ddd;"><strong>{{faq.question}}</strong></p>
+								<p class="parent-p">{{faq.answer}}</p>	
 							</div>
 							<div>&nbsp;</div>
 						</div>
@@ -76,29 +72,28 @@
 					<div class="accordion md-accordion" id="remedAccMain" role="tablist" aria-multiselectable="true" >
 						<!-- remediation section -->
 						<!-- Accordion card -->
-						  <div class="card">
+						  <div class="card" ng-repeat = "r in recommendations">
 
 							<!-- Card header -->
-							<div class="card-header" role="tab" id="remedAccMain1">
-							  <a data-toggle="collapse" data-parent="#remedAccMain" href="#remedAccMain1Collapse" aria-expanded="true"
-								aria-controls="remedAccMain1Collapse">
+							<div class="card-header" role="tab" id="remedAccMain{{$index}}">
+							  <a data-toggle="collapse" data-parent="#remedAccMain" href="#remedAccMainCollapse{{$index}}" aria-expanded="true"
+								aria-controls="remedAccMainCollapse{{$index}}">
 								<h6 class="mb-0">
-								  [1] Use of native libraries - .NET/C#/ASP
-								  
+								  {{r["@type"]}}: {{r.abstract}}
 								</h6>
 							  </a>
 							</div>
 
 							<!-- Card body -->
-							<div id="remedAccMain1Collapse" class="collapse" role="tabpanel" aria-labelledby="remedAccMain1"
+							<div id="remedAccMainCollapse{{$index}}" class="collapse" role="tabpanel" aria-labelledby="remedAccMain{{$index}}"
 							  data-parent="#remedAccMain">
 							  <div class="card-body">
 							<!-- Remediation Details -->
 								<div><h4>Comments</h4></div>
 								<div class="post-main-info">
 									<div>
-										<p id="remedAccMain1comments">
-Use existing APIs instead of scaping to a shell command. For example, use the native  <em class="blue">System.Net.NetworkInformation.Ping for .Net, rather than calling the DOS command cmd.exe to perform the 'ping' command.</em>
+										<p id="remedAccMaincomments{{$index}}">
+											{{r.comments}}
 											</p>
 										</div>
 									</div>
@@ -106,9 +101,8 @@ Use existing APIs instead of scaping to a shell command. For example, use the na
 								<div><h4>Impacts</h4></div>
 								<div class="post-main-info">
 									<div>
-									<p id="remedAccMain1impacts">
-For common functionalities (e.g. ping, traceroute, open file, etc.) it's easy to find libraries that performs those that are well tested and widely used in the market. But for some uncommon functionalities, this may not be existent, or not tested enough to trust the library or method. DO NOT import or use libraries that you do not know the origin as those may contain security vulnerabilities or even Easter eggs implanted by the developers.. 
-Confirm with the application owner, the license to use any library that is not part of the core system you are using, even the open source ones, to make sure there is no restriction of use or limitations from the same (e.g. make reference to the developer; &quot;copy left&quot;: any code using the open source library has to become open source as well)
+									<p id="remedAccMainimpacts{{$index}}">
+										{{r.impact}}
 									</P>
 									</div>
 								</div>
@@ -116,70 +110,15 @@ Confirm with the application owner, the license to use any library that is not p
 								<div class="row">
 									<div class="col-md-6 vuln">
 										<label for="vuln">Vulnerable code</label>
-										<textarea id="remedAccMain1vulncode">
-protected void btnCheck_Click(object sender, EventArgs e)
-{
-	using (Process process = new Process())
-	{
-		try
-		{
-			ProcessStartInfo startInfo = new ProcessStartInfo();
-			startInfo.FileName = "cmd.exe";
-
-			startInfo.Arguments = "/c ping " + <em class="red">txtIP.Text.ToString();</em>
-			startInfo.RedirectStandardOutput = true;
-			startInfo.UseShellExecute = false;
-
-			process.StartInfo = startInfo;
-			process.Start();
-			while (!process.HasExited)
-			{
-				Response.Write(process.StandardOutput.ReadToEnd());
-			}   
-		}
-			catch (InvalidOperationException inOEx)
-		{
-			lblError.Text = inOEx.Message.ToString();
-		}
-		catch (Exception ex)
-		{
-			lblError.Text = ex.Message.ToString();
-		}
-	}
-}	
-								</textarea>	
+										<textarea id="remedAccMainvulncode{{$index}}">
+											{{r.vulncode}}
+										</textarea>	
 									</div>
 									<div class="col-md-6 nonvuln">
 										<label for="nonvuln">Non-vulnerable code</label>
-										<textarea id="remedAccMain1nonvulncode">
-protected void btnCheck_Click(object sender, EventArgs e)
-{
-	 try
-	{
-	  <em class="blue">  Ping pingSender = new Ping();</em>
-
-		int timeout = 120;
-	<em class="blue">    PingReply reply = pingSender.Send(txtIP.Text.ToString(), timeout);</em>
-		if (reply.Status == IPStatus.Success)
-		{
-			Response.Write(&quot;Address: &quot; + reply.Address.ToString());
-			Response.Write(&quot;RoundTrip time: &quot; + reply.Address.ToString());
-		}
-		else
-		{
-			Response.Write(&quot;Invalid IP Address&quot;);
-		}
-	}
-	catch (PingException pngEx)
-	{
-		lblError.Text = &quot;Invalid IP Address. &quot; + pngEx.Message.ToString();
-	}
-	catch (Exception ex)
-	{
-		lblError.Text = &quot;Invalid IP Address. &quot; + ex.Message.ToString();
-	}
-}	
-									</textarea>
+										<textarea id="remedAccMainnonvulncode{{$index}}">
+											{{r.nonvulncode}}
+										</textarea>
 									</div>
 								</div>
 							<!-- Remediation Details -->
@@ -189,271 +128,7 @@ protected void btnCheck_Click(object sender, EventArgs e)
 
 						  </div>
 						  <!-- Accordion card -->  
-						  
-						  <!-- Accordion card -->
-						  <div class="card">
-
-							<!-- Card header -->
-							<div class="card-header" role="tab" id="remedAccMain2">
-							  <a data-toggle="collapse" data-parent="#remedAccMain" href="#remedAccMain2Collapse" aria-expanded="true"
-								aria-controls="remedAccMain2Collapse">
-								<h6 class="mb-0">
-								  [2] Implement functionality in code - .NET/C#/ASP
-								</h6>
-							  </a>
-							</div>
-
-							<!-- Card body -->
-							<div id="remedAccMain2Collapse" class="collapse" role="tabpanel" aria-labelledby="remedAccMain2"
-							  data-parent="#remedAccMain">
-							  <div class="card-body">
-							<!-- Remediation Details -->
-							<div>
-								<div><h4>Comments</h4></div>
-								<div class="post-main-info">
-									<div>
-										<p id="remedAccMain2comments">
-With our example code, user needs to input the IP to  check if the IP is available. The code using ping command and concatenated the input of the user. With the vulnerable code, user can concatenate other command because they did not put any validation to it. Without knowing that this is vulnerable to command injection. Below is just one example command that can lead to information leak.
-
-runManualBalance.bat 123456 052020 10.2.3.0<em class="red"> && dir</em>
-
-In our non-vulnerable code, we put some validation using regular expression just to allow only valid IPs. With this, user cannot anymore inject any other sets of command to exploit the application.
-
-Whitelist with a specific set of allowed characters is the best way of solving input validation for command injection.										
-										</p>
-									</div>
-								</div>
-							</div>
-								<div>&nbsp;</div>
-								<div><h4>Impacts</h4></div>
-								<div class="post-main-info">
-									<div>
-									<p id="remedAccMain2impacts">
-There are ways for an attacker to cause DoS by overloading the application when exploiting the Regexp performance (e.g., sending multiple long filenames to be checked will use too many computational cycles on the server testing the Regexp). If you are concerned with a DoS on the application due to multiple Regexp checks, implement a CAPTCHA validation after a certain number of tries on the web page.
-Remember to only allow a certain set of characters to be recognized (whitelist), instead of removing chars you think should not be used (blacklist). Blacklists approach is usually incomplete and can pose a security issue.									
-									</P>
-									</div>
-								</div>
-								<div>&nbsp;</div>
-								<div class="row">
-									<div class="col-md-6 vuln">
-										<label for="vuln">Vulnerable code</label>
-										<textarea id="remedAccMain2vulncode">
-protected void btnCheck_Click(object sender, EventArgs e)
-{
-	using (Process process = new Process())
-	{
-		try
-		{
-			ProcessStartInfo startInfo = new ProcessStartInfo();
-			startInfo.FileName = &quot;<em class="red">runManualBalance.bat</em> &quot;;
-
-			startInfo.Arguments = <em class="red">&quot;--id=&quot; + userID.Text.ToString() + &quot;  --date=&quot; + date.Text.ToString() + &quot;  --user_IP=&quot; + IP.Text.ToString() ;</em>
-			startInfo.RedirectStandardOutput = true;
-			startInfo.UseShellExecute = false;
-
-			process.StartInfo = startInfo;
-			process.Start();
-			while (!process.HasExited)
-			{
-				Response.Write(process.StandardOutput.ReadToEnd());
-			}   
-		}
-			catch (InvalidOperationException inOEx)
-		{
-			lblError.Text = inOEx.Message.ToString();
-		}
-		catch (Exception ex)
-		{
-			lblError.Text = ex.Message.ToString();
-		}
-	}
-}
-								</textarea>	
-							</div>
-							<div class="col-md-6 nonvuln">
-								<label for="nonvuln">Non-vulnerable code</label>
-								<textarea id="remedAccMain2nonvulncode">
-protected void btnCheck_Click(object sender, EventArgs e)
-{
-	using (Process process = new Process())
-	{
-		try
-		{
-			//Match pattern for IP address    
-<em class="blue">                    string userID_Pattern = @&quot;^([1-9]){6}$&quot;;  // ID: 123456
-			string date_Pattern = @&quot;^([0-1][0-9][0-3][0-9]20[2-5][0-9])$ &quot;;  // Date(MMDDYYYY): 05302020
-			string userIP_Pattern = @&quot;^([1-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(\.([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])){3}$&quot;; // IP: 192.168.0.2</em>
-			//Regular Expression object    
-			Regex checkID = new Regex(userID_Pattern);
-			Regex checkDate = new Regex(date_Pattern);
-			Regex checkIP = new Regex(userIP_Pattern);
-		  <em class="blue">  if (    (txtID.Text.ToString() != &quot;&quot; && checkID.IsMatch(txtID.Text.ToString() )) && (txtDate.Text.ToString() != &quot;&quot; && checkDate.IsMatch(txtDate.Text.ToString() )) && (txtIP.Text.ToString() != &quot;&quot; && checkIP.IsMatch(txtIP.Text.ToString() ))  )</em>
-			{
-				ProcessStartInfo startInfo = new ProcessStartInfo();
-				startInfo.FileName = &quot;runManualBalance.bat&quot;;
-<em class="blue">                        startInfo.Arguments = &quot;--id=&quot; + userID.Text.ToString() + &quot;  --date=&quot; + date.Text.ToString() + &quot;  --user_IP=&quot; + IP.Text.ToString() ;  // Whitelisted values prevent command injection FIX
-</em>                         startInfo.RedirectStandardOutput = true;
-				startInfo.UseShellExecute = false;
-
-				process.StartInfo = startInfo;
-				process.Start();
-				while (!process.HasExited)
-				{
-					Response.Write(process.StandardOutput.ReadToEnd());
-				}
-			}
-			else
-			{
-				lblError.Text = &quot;Invalid IP Address&quot;;
-			}
-		}
-		catch (InvalidOperationException inOEx)
-		{
-			lblError.Text = inOEx.Message.ToString();
-		}
-		catch (Exception ex)
-		{
-			lblError.Text = ex.Message.ToString();
-		}
-	}
-}
-									</textarea>
-								</div>
-							</div>
-							<!-- Remediation Details -->
-
-							  </div>
-							</div>
-
-						  </div>
-						  <!-- Accordion card -->
-						  
-						  <!-- Accordion card -->
-						  <div class="card">
-
-							<!-- Card header -->
-							<div class="card-header" role="tab" id="remedAccMain3">
-							  <a data-toggle="collapse" data-parent="#remedAccMain" href="#remedAccMain3Collapse" aria-expanded="true"
-								aria-controls="remedAccMain3Collapse">
-								<h6 class="mb-0">
-								  [3] Using RegExp and Runtime.exec - JAVA/JSP
-								</h6>
-							  </a>
-							</div>
-
-							<!-- Card body -->
-							<div id="remedAccMain3Collapse" class="collapse" role="tabpanel" aria-labelledby="remedAccMain3"
-							  data-parent="#remedAccMain">
-							  <div class="card-body" >
-							<!-- Remediation Details -->
-							<div>
-								<div><h4>Comments</h4></div>
-								<div class="post-main-info">
-									<div>
-										<p id="remedAccMain3comments">
-This protection strategy is based on some layers of protections, based on the required functionalities. The best approach will always to avoid executing OS commands from the code, making it easier to port to other OS if needed. Input string is sanitized, whitelisted and only if validated is executed.
-
-The first layer is to find only whitelisted characters on the cmd string (e.g.: letters, numbers, space, dot and /). This removes some attack strategies such as using &gt; to write to local files (overwrite log file, or generate new executable commands).
-The second layer is to check if the command (first parameter) is inside the list of all business required commands (&quot;cd&quot;, &quot;dir&quot;, &quot;type&quot;). Of course this list needs to be adapted to each code.
-The last layer in use is to run the command using &quot;Runtime.exec()&quot;, that splits the string into an array of words, then executes the first word in the array with the rest of the words as parameters. So any invalid characters (&, &&, |, ||, etc) would simply end up as a parameter being passed to the first command. 
-
-For more information, refer to: https://cheatsheetseries.owasp.org/cheatsheets/OS_Command_Injection_Defense_Cheat_Sheet.html										
-										</p>
-									</div>
-								</div>
-							</div>
-								<div>&nbsp;</div>
-								<div><h4>Impacts</h4></div>
-								<div class="post-main-info">
-									<div>
-									<p id="remedAccMain3impacts">
-This is a guidance for one strategy to fix only, as for different commands, the argument validation and sanitization may differ. In any case, the concatenation of commands must be prevented on the code.
-Other strategies besides sanitizing and validating the input include: using the functionality via library instead of calling a cmd function; or limiting the commands and arguments to an internal list, where the parameters select one element on the pre-defined list of arguments.
-									</P>
-									</div>
-								</div>
-								<div>&nbsp;</div>
-								<div class="row">
-									<div class="col-md-6 vuln">
-										<label for="vuln">Vulnerable code</label>
-										<textarea id="remedAccMain3vulncode">
-public ModelAndView executeCommand( @RequestParam(value=&quot;cmd&quot;)String cmd) 
-{
-	ModelAndView mv = new ModelAndView();
-	List&lt;String&gt; dirList = new ArrayList&lt;String&gt;();
-<em class="red">//input argument added to command array without sanitization</em>	
-	String commandArray[] = {&quot;cmd&quot;, &quot;/c&quot;, cmd, &quot;C:\\software\\apache-tomcat-8.5.41\\tmpFiles&quot;};
-	try {
-		Process process = Runtime.getRuntime().exec(commandArray);
-		process.waitFor();
-		BufferedReader r = new BufferedReader(new InputStreamReader(process.getInputStream()));
-		String line;
-		while (true) {
-			line = r.readLine();
-			if (line == null) { break; }
-			dirList.add(line);
-		}
-		r.close();
-		mv.setViewName(&quot;commandExec&quot;);
-		mv.addObject(&quot;dirlist&quot;, dirList);
-	} catch (IOException e) {
-		e.printStackTrace();
-	} catch (InterruptedException e) {
-		e.printStackTrace();
-	}
-	} 
-	return mv;
-}
-								</textarea>	
-							</div>
-							<div class="col-md-6 nonvuln">
-								<label for="nonvuln">Non-vulnerable code</label>
-								<textarea id="remedAccMain3nonvulncode">
-public ModelAndView executeCommand( @RequestParam(value=&quot;cmd&quot;)String cmd) {
-	ModelAndView mv = new ModelAndView();
-	List&lt;String&gt; dirList = new ArrayList&lt;String&gt;();
-	<em class="blue">boolean isCmdValid = Pattern.matches(&quot;^[a-zA-Z0-9. /:]{2,25}$&quot;, cmd);
-	List&lt;String&gt; whiteListCmd = Arrays.asList(&quot;cd&quot;,&quot;dir&quot;,&quot;type&quot;); 
-	String[] inputCmd = cmd.split(&quot; &quot;);
-	
-	isCmdValid = isCmdValid && whiteListCmd.stream().anyMatch(wlcmd -&gt; wlcmd.matches(inputCmd[0]));
-	if(isCmdValid) {
-	String commandArray[] = {&quot;cmd&quot;, &quot;/c&quot;, cmd, &quot;C:\\software\\apache-tomcat-8.5.41\\tmpFiles&quot;};
-	try </em>{
-		<em class="blue">Process process = Runtime.getRuntime().exec(commandArray);</em>
-		process.waitFor();
-		BufferedReader r = new BufferedReader(new InputStreamReader(process.getInputStream()));
-		String line;
-		while (true) {
-			line = r.readLine();
-			if (line == null) { break; }
-			dirList.add(line);
-		}
-		r.close();
-		mv.setViewName(&quot;commandExec&quot;);
-		mv.addObject(&quot;dirlist&quot;, dirList);
-	} catch (IOException e) {
-		e.printStackTrace();
-	} catch (InterruptedException e) {
-		e.printStackTrace();
-	}
-	} <em class="blue">else {
-		mv.setViewName(&quot;commandExec&quot;);
-		mv.addObject(&quot;msg&quot;, &quot;Command execution not carried out, since it has invalid characters&quot;);
-	}</em>
-	return mv;
-}
-									</textarea>
-								</div>
-							</div>
-							<!-- Remediation Details -->
-
-							  </div>
-							</div>
-
-						  </div>
-						  <!-- Accordion card -->						  
+						  					  
 					</div>
 					<!-- remediation accordion end -->
 				</div>
@@ -466,27 +141,28 @@ public ModelAndView executeCommand( @RequestParam(value=&quot;cmd&quot;)String c
 						<!-- mitigation section -->
 						
 						  <!-- Accordion card -->
-						  <div class="card">
+						  <div class="card" ng-repeat = "m in mitigations">
 
 							<!-- Card header -->
-							<div class="card-header" role="tab" id="mitigAccMain1">
-							  <a data-toggle="collapse" data-parent="#mitigAccMain" href="#mitigAccMain1Collapse" aria-expanded="true"
-								aria-controls="mitigAccMain1Collapse">
+							<div class="card-header" role="tab" id="mitigAccMain{{$index}}">
+							  <a data-toggle="collapse" data-parent="#mitigAccMain" href="#mitigAccMainCollapse{{$index}}" aria-expanded="true"
+								aria-controls="mitigAccMainCollapse{{$index}}">
 								<h6 class="mb-0">
-								  [1] Mitigation - Web Server / IIS
+									{{m.abstract}}
 								</h6>
 							  </a>
 							</div>
 
 							<!-- Card body -->
-							<div id="mitigAccMain1Collapse" class="collapse" role="tabpanel" aria-labelledby="mitigAccMain1"
+							<div id="mitigAccMainCollapse{{$index}}" class="collapse" role="tabpanel" aria-labelledby="mitigAccMain{{$index}}"
 							  data-parent="#mitigAccMain">
 							  <div class="card-body">
 							  <!-- Mitigation Details -->
 								<div><h4>System</h4></div>
 								<div class="post-main-info">
 									<div>
-										<p id="mitigAccMain1system">WAF / ModSecurity										
+										<p id="mitigAccMainsystem{{$index}}">
+											{{m.system}}										
 										</p>
 									</div>
 								</div>
@@ -494,7 +170,8 @@ public ModelAndView executeCommand( @RequestParam(value=&quot;cmd&quot;)String c
 								<div><h4>Configuration</h4></div>
 								<div class="post-main-info">
 									<div>
-										<p id="mitigAccMain1configuration">Varies from WAF in use.										
+										<p id="mitigAccMainconfiguration{{$index}}">
+											{{m.configuration}}										
 										</p>
 									</div>
 								</div>
@@ -502,18 +179,8 @@ public ModelAndView executeCommand( @RequestParam(value=&quot;cmd&quot;)String c
 								<div><h4>Comments</h4></div>
 								<div class="post-main-info">
 									<div>
-									<p id="mitigAccMain1comments">
-Use WAF as a defense in depth, adding another protection layer to sensitive applications when possible.
-
-The default rules for WAF protect against SOME command injections and can be an extra layer of protection. Unfortunately, WAF rules can be bypassed in many scenarios and cannot be the only form of protection in place. 
-When testing WAF rules, use && or | or ; to pipe the commands to execute. e.g.: 
-127.0.0.1 && cd /root/Desktop && pwd && service --status-all
-127.0.0.1  && cat index.php
-127.0.0.1 && netstat -ltnp | grep '80'
-
-Perform a full functional test is WAF is added, including on the test scripts all special characters scenarios that are expected to work (e.g., Spanish, Russian, etc. charsets, &lt;, &gt;, ', &quot;, etc. when required by the application). WAF's do have a history of blocking those characters to prevent input injection, but this can affect the normal functionalities of the system.
-
-For ModSecurity, consider using OWASP Core Rule Set CRS https://coreruleset.org/documentation/
+									<p id="mitigAccMaincomments{{$index}}">
+										{{m.comments}}
 									</P>
 									</div>
 								</div>
@@ -521,14 +188,14 @@ For ModSecurity, consider using OWASP Core Rule Set CRS https://coreruleset.org/
 								<div class="row">
 									<div class="col-md-6 vuln">
 										<label for="vuln">Backend</label>
-										<textarea id="mitigAccMain1vulncode">
-WAF and Firewalls default ruleset, CRS
+										<textarea id="mitigAccMainvulncode{{$index}}">
+											{{m.backend}}
 										</textarea>	
 									</div>
 									<div class="col-md-6 nonvuln">
 										<label for="nonvuln">Frontend</label>
-										<textarea id="mitigAccMain1nonvulncode">
-N/A
+										<textarea id="mitigAccMainnonvulncode{{$index}}">
+											{{m.frontend}}
 										</textarea>
 									</div>
 								</div>
@@ -539,96 +206,6 @@ N/A
 						  </div>
 						  <!-- Accordion card -->		
 
-						  <!-- Accordion card -->
-						  <div class="card">
-
-							<!-- Card header -->
-							<div class="card-header" role="tab" id="mitigAccMain2">
-							  <a data-toggle="collapse" data-parent="#mitigAccMain" href="#mitigAccMain2Collapse" aria-expanded="true"
-								aria-controls="mitigAccMain2Collapse">
-								<h6 class="mb-0">
-								  [2] Mitigation - WAF / ModSecurity
-								</h6>
-							  </a>
-							</div>
-
-							<!-- Card body -->
-							<div id="mitigAccMain2Collapse" class="collapse" role="tabpanel" aria-labelledby="mitigAccMain2"
-							  data-parent="#mitigAccMain">
-							  <div class="card-body">
-							  <!-- Mitigation Details -->
-								<div><h4>System</h4></div>
-								<div class="post-main-info">
-									<div>
-										<p id="mitigAccMain2system">WAF / ModSecurity										
-										</p>
-									</div>
-								</div>
-								<div>&nbsp;</div>
-								<div><h4>Configuration</h4></div>
-								<div class="post-main-info">
-									<div>
-										<p id="mitigAccMain2configuration"><em class="bold">web.config
-</em>Insert the below code, right after the &lt;/configSections&gt; in the web.config file of the web application.
-<em class="bold">
-</em>&lt;system.webServer&gt;
-    &lt;ModSecurity enabled=&quot;true&quot; configFile=&quot;C:\Program Files\ModSecurity IIS\modsecurity_iis.conf&quot; /&gt;
-&lt;/system.webServer&gt;
-
-The value of the <em class="bold">configFile</em> must be the path on where the ModSecurity installed.										
-										</p>
-									</div>
-								</div>
-								<div>&nbsp;</div>
-								<div><h4>Comments</h4></div>
-								<div class="post-main-info">
-									<div>
-									<p id="mitigAccMain2comments">Use WAF as a defense in depth, adding another protection layer to sensitive applications when possible.
-
-Perform a full functional test is WAF is added, including on the test scripts all special characters scenarios that are expected to work (e.g., Spanish, Russian, etc. charsets, &lt;  &gt;  '   &quot; , ; & $  etc. when required by the application). WAF's do have a history of blocking those characters to prevent input injection, but this can affect the normal functionalities of the system.
-
-Remember there are methods to bypass WAF protections against RCE (https://www.secjuice.com/web-application-firewall-waf-evasion/):
-<em class="bold">10.10.10.1; cat$u+/etc$u/passwd$u</em> -&gt; as $u is not initialized, it may bypass the WAF ruleset and have access to the file. 
-
-WAF can be used to log attempts and perform active defenses to block an on-going attack (e.g. block the attacker IP on the firewall).
-
-WAF cannot be the only protection to prevent RCE Attacks, and input validation procedures must be added to the code when possible.
-
-For ModSecurity, consider using OWASP Core Rule Set CRS https://coreruleset.org/documentation/
-									</P>
-									</div>
-								</div>
-								<div>&nbsp;</div>
-								<div class="row">
-									<div class="col-md-6 vuln">
-										<label for="vuln">Backend</label>
-										<textarea id="mitigAccMain2vulncode">
-- OWASP CRS must be downloaded and enabled. 
-- <em class="bold">REQUEST-932-APPLICATION-ATTACK-RCE.conf</em> must be present in the <em class="bold">rules</em> folder. This is the rules for remote code execution attack.
-- Open the modsecurity.conf and update the SecRuleEngine to On.
-- Open the modsecurity_iis.conf and update the entry Include crs-setup.conf.example to Include crs-setup.conf
-										</textarea>	
-									</div>
-									<div class="col-md-6 nonvuln">
-										<label for="nonvuln">Frontend</label>
-										<textarea id="mitigAccMain2nonvulncode">
-SIEM integration:
-Windows: Collect logs with Source as <em class="bold">ModSecurity</em> from eventviewer. Below is the log captured for SQL Injection.
-
-(To be checked on EventLog: [client ] <em class="red">ModSecurity: Access denied with code 403 (phase 2). Operator GE matched 5 at TX:anomaly_score. [file &quot;C:\/Program Files/ModSecurity IIS/owasp_crs/rules/REQUEST-.....conf&quot;] [line &quot;57&quot;] [id &quot;949110&quot;] [msg &quot;Inbound Anomaly Score Exceeded (Total Score: 5)&quot;] [severity &quot;CRITICAL&quot;] [tag &quot;application-multi&quot;] [tag &quot;language-multi&quot;] [tag &quot;platform-multi&quot;] [tag &quot;attack-generic&quot;] [hostname &quot;ALCB-749326Z-LX&quot;] [uri &quot;/Home/Login&quot;] [unique_id &quot;18014398524514369608&quot;]</em>
-
-
-Linux: 
-										</textarea>
-									</div>
-								</div>
-								<!-- Mitigation Details -->
-
-							  </div>
-							</div>
-						  </div>
-						  <!-- Accordion card -->							
-					  
 					</div>
 				</div>
 					<!-- mitigationn accordion end -->
@@ -636,6 +213,10 @@ Linux:
 					<div class="tab-pane fade" id="issueList" role="tabpanel" aria-labelledby="issueList-tab">			
 						<div>			
 							<h3>List of all issues in SQL Injection</h3>
+							<div class="post-main-info">
+								<p class="parent-p" style="border-bottom: 1px solid #ddd;"><strong>{{faq.question}}</strong></p>
+								<p class="parent-p">{{faq.answer}}</p>	
+							</div>
 						</div>	
 					</div>
 				</div>
@@ -658,6 +239,8 @@ Linux:
 				$scope.issueName = _issueName;
 				
 				$scope.faqs = [];
+				$scope.recommendations = [];
+				$scope.mitigations = [];
 
 				faqsObj = jsonData.project.unsupported[_issueName].remediation.remediation.faqs;
 				
@@ -668,6 +251,28 @@ Linux:
 						$scope.faqs.push(faqsObj.faq);
 					}
 				}
+
+				remedObj = jsonData.project.unsupported[_issueName].remediation.remediation.recommendations;
+
+				if(remedObj != null){
+					if (isArray(remedObj.recommendation)){
+						$scope.recommendations = remedObj.recommendation;
+					}else{
+						$scope.recommendations.push(remedObj.recommendation);
+					}
+				}
+
+				mitigObj = jsonData.project.unsupported[_issueName].remediation.remediation.mitigations;
+
+				if(mitigObj != null){
+					if (isArray(mitigObj.mitigation)){
+						$scope.mitigations = mitigObj.mitigation;
+					}else{
+						$scope.mitigations.push(mitigObj.mitigation);
+					}
+				}
+
+				jsonData.project.unsupported[_issueName].files;
 
 	});
 
