@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Vulnerability Details</title>
+
+    <meta name="description" content="Source code generated using layoutit.com">
+    <meta name="author" content="LayoutIt!">
+
+    <link href="css/bootstrap.min.css" rel="stylesheet" />
+    <link href="css/style.css" rel="stylesheet" />
+	<link rel="stylesheet" href="css/codemirror.css" />
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.css" />
+	<link rel="stylesheet" type="text/css" href="css/mergely.css" />	
+	<link rel="stylesheet" type="text/css" href="css/supportedstyle.css" />
+	<script src="js/angular.min.js"></script>	
+	<script src="js/codemirror.js"></script>
+	<script src="js/javascript.js"></script>
+	<script src="js/autorefresh.js"></script>
+	
+  </head>
+  <body ng-app="myapp" ng-controller="SupportedObject">
+  
+    <div class="container-fluid">
+		<div class="row">
+			<div class="col-md-12">
+				<div style="margin-bottom: 20px;">
+					<!-- header -->
+					<div class="heading">
+						<h1 ng-bind="issueName"></h1>
+					</div>  
+					<!-- header -->
+				</div>
+				
+				  <ul class="nav nav-tabs" id="myTab" role="tablist">
+					<li class="nav-item waves-effect waves-light">
+					  <a class="nav-link" id="remediation-tab" data-toggle="tab" href="#remediation" role="tab" aria-controls="remediation" aria-selected="false">Remediation</a>
+					</li>
+					<li class="nav-item waves-effect waves-light">
+					  <a class="nav-link" id="mitigation-tab" data-toggle="tab" href="#mitigation" role="tab" aria-controls="mitigation" aria-selected="true">Mitigation</a>
+					</li>				
+				  </ul>
+				  
+				  <div class="tab-content" id="myTabContent"  style="margin:20px">
+					<div class="tab-pane fade" id="remediation" role="tabpanel" aria-labelledby="remediation-tab">
+
+					<!-- remediation accordion start -->
+					<div class="accordion md-accordion" id="remedAccMain" role="tablist" aria-multiselectable="true" >
+						<!-- remediation section -->
+						<!-- Accordion card -->
+						<li ng-repeat="fileDtl in files" style="border-bottom: 1px solid #ddd">
+						  <div class="card">
+
+							<!-- Card header -->
+							<div class="card-header" role="tab" id="remedAccMain{{$index}}">
+								  <a data-toggle="collapse" data-parent="#remedAccMain" href="#remedAccMainCollapse{{$index}}" aria-expanded="true"
+									aria-controls="remedAccMainCollapse{{$index}}">
+									<h6 class="mb-0">
+									  File: {{fileDtl.file}}
+									</h6>
+								  </a>
+							</div>
+
+							<!-- Card body -->
+							<div id="remedAccMainCollapse{{$index}}" class="collapse" role="tabpanel" aria-labelledby="remedAccMain{{$index}}"
+								  data-parent="#remedAccMain">
+								<div class="card-body">
+								<!-- Remediation Details -->
+									<div>&nbsp;</div>
+										<li ng-repeat="dr in fileDtl.items" style="border-bottom: 1px solid #ddd">
+										<a href ng-click="codeDiffMerge((dr.id),(dr.originalCode),(dr.remediatedCode))">[{{$index+1}}] Issue ID: {{dr.id}}</a>
+										<div id="mergely{{dr.id}}">
+										</div>
+								<!-- Remediation Details -->
+										</li>
+								</div>
+							</div>
+						  </div>
+						</li>
+						  <!-- Accordion card -->						  						  
+					</div>
+					<!-- remediation accordion end -->
+				</div>
+				
+			     	<!-- mitigation details start -->
+                     <div class="tab-pane fade" id="mitigation" role="tabpanel" aria-labelledby="mitigation-tab">
+				
+					<!-- mitigationn accordion start -->
+					<div class="accordion md-accordion" id="mitigAccMain" role="tablist" aria-multiselectable="true" >
+						<!-- mitigation section -->
+						
+						  <!-- Accordion card -->
+						  <li ng-repeat="mitigation in mitigations" style="border-bottom: 1px solid #ddd">
+						  <div class="card">
+
+							<!-- Card header -->
+							<div class="card-header" role="tab" id="mitigAccMain{{$index}}">
+							  <a data-toggle="collapse" data-parent="#mitigAccMain" href="#mitigAccMainCollapse{{$index}}" aria-expanded="true"
+								aria-controls="mitigAccMainCollapse{{$index}}">
+								<h6 class="mb-0">
+								  [{{$index+1}}] Mitigation - Web Server / IIS
+								</h6>
+							  </a>
+							</div>
+
+							<!-- Card body -->
+							<div id="mitigAccMainCollapse{{$index}}" class="collapse" role="tabpanel" aria-labelledby="mitigAccMain{{$index}}"
+							  data-parent="#mitigAccMain">
+							  <div class="card-body">
+							  <!-- Mitigation Details -->
+								<div><h4>System</h4></div>
+								<div class="post-main-info">
+									<div>
+										<p id="mitigAccMainsystem{{$index}}">{{mitigation.system}}										
+										</p>
+									</div>
+								</div>
+								<div>&nbsp;</div>
+								<div><h4>Configuration</h4></div>
+								<div class="post-main-info">
+									<div>
+										<p id="mitigAccMainconfiguration{{$index}}">{{mitigation.configuration}}										
+										</p>
+									</div>
+								</div>
+								<div>&nbsp;</div>
+								<div><h4>Comments</h4></div>
+								<div class="post-main-info">
+									<div>
+									<p id="mitigAccMaincomments{{$index}}">
+									{{mitigation.comments}}
+									</P>
+									</div>
+								</div>
+								<div>&nbsp;</div>
+								<div class="row">
+									<div class="col-md-6 vuln">
+										<label for="vuln">Backend</label>
+										<textarea id="mitigAccMainvulncode{{$index}}">
+										{{mitigation.backend}}
+										</textarea>	
+									</div>
+									<div class="col-md-6 nonvuln">
+										<label for="nonvuln">Frontend</label>
+										<textarea id="mitigAccMainnonvulncode{{$index}}">
+										{{mitigation.frontend}}
+										</textarea>
+									</div>
+								</div>
+							<!-- Mitigation Details -->
+							  </div>
+							</div>
+						  </div>
+						  </li>
+						  <!-- Accordion card -->						
+					  
+					</div>
+				</div>
+					<!-- mitigationn accordion end -->
+				</div>
+			</div>
+		</div>
+	</div>
+	
+
+    <script src="js/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/scripts.js"></script>
+	<script src="js/searchcursor.js"></script>	
+	<script src="js/mergely.js"></script>
+	<script src="js/codediff-mergely.js"></script>		
+	<script src="data.json"></script>	
+  </body>
+	<script>
+		var app = angular.module("myapp", []);
+			app.controller("SupportedObject", function($timeout, $scope) {				
+				var url = new URL(window.location.href);
+				_issueName = url.searchParams.get("vuln");
+				$scope.issueName = _issueName;
+				
+				$scope.files = jsonData.project.supported[_issueName].files;
+				var filesVar = jsonData.project.supported[_issueName].files;
+				var filesMapVar = new Map();
+				for(i=0; i<filesVar.length; i++) {
+					filesMapVar.set(filesVar[i].file,filesVar[i].items);
+				}
+				$scope.filesMap = filesMapVar;
+				$scope.mitigations = jsonData.project.supported[_issueName].remediation.remediation.mitigations.mitigation;
+
+				//filesObj = jsonData.project.supported[_issueName].files;
+				$scope.openTab = openTab;
+				function openTab(evt, cityName) {
+			// Declare all variables
+					var i, tabcontent, tablinks;
+
+					  // Get all elements with class="tabcontent" and hide them
+					  tabcontent = document.getElementsByClassName("tabcontent");
+					  for (i = 0; i < tabcontent.length; i++) {
+						tabcontent[i].style.display = "none";
+					  }
+
+					  // Get all elements with class="tablinks" and remove the class "active"
+					  tablinks = document.getElementsByClassName("tablinks");
+					  for (i = 0; i < tablinks.length; i++) {
+						tablinks[i].className = tablinks[i].className.replace(" active", "");
+					  }
+
+					  // Show the current tab, and add an "active" class to the button that opened the tab
+					  document.getElementById(cityName).style.display = "block";
+					  evt.currentTarget.className += " active";
+					  //codeDiffMerge();
+				}	
+				$scope.codeDiffMerge=codeDiffMerge;
+				function codeDiffMerge(index,originalcode,remediatedcode) {
+					var i, mergelycontent, mergelyfullscreen,testvar;
+					originalcode = originalcode.join('\n');
+					remediatedcode = remediatedcode.join('\n');
+					testvar = "mergely"+(index);
+					mergelyfullscreen = document.getElementById(testvar);
+							$('#mergely'+index).mergely({
+								license: 'lgpl',
+								cmsettings: {
+									readOnly: true
+								},
+								width: 'auto',
+								height: '400px',
+								lhs: function(setValue) {
+									setValue(originalcode);
+								},
+								rhs: function(setValue) {
+									setValue(remediatedcode);
+								}
+							});					
+				}
+		});
+	</script>  
+</html>

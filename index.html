@@ -46,6 +46,7 @@
 							<ul class="cbp-ntsubaccordion" >
 								<li ng-repeat="(k,d) in data.project.supported" style="border-bottom: 1px solid #ddd">
 									<h4 class="cbp-nttrigger">{{k}}</h4>
+									<a href="supported.html?vuln=SQL%20Injection" target="_blank">{{k}}</a>
 									<div class="cbp-ntcontent">
 										<!-- Tab links -->
 										<div class="tab">
@@ -79,48 +80,6 @@
 							<ul class="cbp-ntsubaccordion">
 								<li ng-repeat="(k,d) in data.project.unsupported" style="border-bottom: 1px solid #ddd">
 									<h4 class="cbp-nttrigger">{{k}}</h4>
-									<div class="cbp-ntcontent">
-										<!-- Tab links -->
-										<div class="tab">
-										  <button class="tablinks" ng-click="openTab($event, 'NSRemediation'+$index)">Remediation</button>
-										  <button class="tablinks" ng-click="openTab($event, 'NSMitigation'+$index)">Mitigation</button>
-										  <button class="tablinks" ng-click="openTab($event, 'NSIssueList'+$index)">Issue List</button>
-										  
-										</div>
-										<!-- Tab content -->
-										<div id="NSRemediation{{$index}}" class="tabcontent">
-											<ul class="cbp-ntsubaccordion">
-												<li>
-												<p>Remediation data goes here</p>
-												</li>
-											</ul>
-										</div>
-										<div id="NSMitigation{{$index}}" class="tabcontent">
-										  <ul class="cbp-ntsubaccordion">
-												<li>
-												<p>Mitigation data goes here</p>
-												</li>
-											</ul>
-										</div>
-										<div id="NSIssueList{{$index}}" class="tabcontent">
-										  <ul class="cbp-ntsubaccordion">
-										<li>
-											<h4 class="cbp-nttrigger">Issue ID: IN00005</h4>
-											<div class="cbp-ntcontent">
-												<div id="code diff" class="code-diff">
-													
-													<div class="textAreaColumn">
-														<div>
-															<span>Code Issue</span>
-															<textarea readonly>Content goes here</textarea>
-														</div>
-													</div> 
-												</div>
-											</div>
-										</li>
-										</ul>
-										</div>
-									</div>
 								</li>
 							</ul>
 						</div>
@@ -129,54 +88,12 @@
 						<h3 class="cbp-nttrigger">Failed remediation items: {{issueCounts.failed}}</h3>
 						<div class="cbp-ntcontent">
 							<ul class="cbp-ntsubaccordion">
-								<li>
-									<h4 class="cbp-nttrigger">Unsupported SQL Injection</h4>
-									<div class="cbp-ntcontent">
-										<!-- Tab links -->
-										<div class="tab">
-										  <button class="tablinks" onclick="openTab($event, 'F_Remediation')">Remediation</button>
-										  <button class="tablinks" onclick="openTab($event, 'F_Mitigation')">Mitigation</button>
-										  <button class="tablinks" onclick="openTab($event, 'F_IssueList')">Issue List</button>
-										  
-										</div>
-										<!-- Tab content -->
-										<div id="F_Remediation" class="tabcontent">
-											<ul class="cbp-ntsubaccordion">
-												<li>
-												<p>Remediation data goes here</p>
-												</li>
-											</ul>
-										</div>
-										<div id="F_Mitigation" class="tabcontent">
-										  <ul class="cbp-ntsubaccordion">
-												<li>
-												<p>Mitigation data goes here</p>
-												</li>
-											</ul>
-										</div>
-										<div id="F_IssueList" class="tabcontent">
-										  <ul class="cbp-ntsubaccordion">
-										<li>
-											<h4 class="cbp-nttrigger">Issue ID: IN00006</h4>
-											<div class="cbp-ntcontent">
-												<div id="code diff" class="code-diff">
-													
-													<div class="textAreaColumn">
-														<div>
-															<span>Code Issue</span>
-															<textarea readonly>Content goes here</textarea>
-														</div>
-													</div> 
-												</div>
-											</div>
-										</li>
-										</ul>
-										</div>
-									</div>
+								<li ng-repeat="(k,d) in data.project.failed" style="border-bottom: 1px solid #ddd">
+									<h4 class="cbp-nttrigger">{{k}}</h4>
+									<a href="supported.html?vuln=Path%20Manipulation" target="_blank">{{k}}</a>
 								</li>
 							</ul>
-						</di
-						
+						</div>						
 					</li>
 				</ul>
 			</div>
