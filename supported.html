@@ -14,12 +14,11 @@
     <link href="css/style.css" rel="stylesheet" />
 	<link rel="stylesheet" href="css/codemirror.css" />
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.css" />
-	<link rel="stylesheet" type="text/css" href="css/mergely.css" />	
-	<link rel="stylesheet" type="text/css" href="css/supportedstyle.css" />
-	<script src="js/angular.min.js"></script>	
 	<script src="js/codemirror.js"></script>
 	<script src="js/javascript.js"></script>
 	<script src="js/autorefresh.js"></script>
+	<script src="js/angular.min.js"></script>		
+	<link rel="stylesheet" type="text/css" href="css/supportedstyle.css" />
 	
   </head>
   <body ng-app="myapp" ng-controller="SupportedObject">
@@ -37,6 +36,9 @@
 				
 				  <ul class="nav nav-tabs" id="myTab" role="tablist">
 					<li class="nav-item waves-effect waves-light">
+					  <a class="nav-link active" id="faq-tab" data-toggle="tab" href="#faq" role="tab" aria-controls="faq" aria-selected="false">FAQ</a>
+					</li>				  
+					<li class="nav-item waves-effect waves-light"> 
 					  <a class="nav-link" id="remediation-tab" data-toggle="tab" href="#remediation" role="tab" aria-controls="remediation" aria-selected="false">Remediation</a>
 					</li>
 					<li class="nav-item waves-effect waves-light">
@@ -45,13 +47,27 @@
 				  </ul>
 				  
 				  <div class="tab-content" id="myTabContent"  style="margin:20px">
+					<div class="tab-pane fade active show" id="faq" role="tabpanel" aria-labelledby="faq-tab">
+						<div ng-repeat="faq in faqs">
+							<div class="post-main-info">
+								<p class="parent-p" style="border-bottom: 1px solid #ddd;"><strong>{{faq.question}}</strong></p>
+								<p class="parent-p">{{faq.answer}}</p>	
+							</div>
+							<div>&nbsp;</div>
+						</div>
+						<div class="post-main-info" ng-if="faqs.length == 0;">
+							<p style="text-align: center;">
+							No data available
+							</p>
+						</div>
+					</div>				  
 					<div class="tab-pane fade" id="remediation" role="tabpanel" aria-labelledby="remediation-tab">
 
 					<!-- remediation accordion start -->
 					<div class="accordion md-accordion" id="remedAccMain" role="tablist" aria-multiselectable="true" >
 						<!-- remediation section -->
 						<!-- Accordion card -->
-						<li ng-repeat="fileDtl in files" style="border-bottom: 1px solid #ddd">
+						<li ng-repeat="f in files" style="border-bottom: 1px solid #ddd;list-style-type:none;">
 						  <div class="card">
 
 							<!-- Card header -->
@@ -59,7 +75,7 @@
 								  <a data-toggle="collapse" data-parent="#remedAccMain" href="#remedAccMainCollapse{{$index}}" aria-expanded="true"
 									aria-controls="remedAccMainCollapse{{$index}}">
 									<h6 class="mb-0">
-									  File: {{fileDtl.file}}
+									  File: {{f.file}}
 									</h6>
 								  </a>
 							</div>
@@ -69,13 +85,12 @@
 								  data-parent="#remedAccMain">
 								<div class="card-body">
 								<!-- Remediation Details -->
-									<div>&nbsp;</div>
-										<li ng-repeat="dr in fileDtl.items" style="border-bottom: 1px solid #ddd">
+										<ul ng-repeat="dr in f.items">
 										<a href ng-click="codeDiffMerge((dr.id),(dr.originalCode),(dr.remediatedCode))">[{{$index+1}}] Issue ID: {{dr.id}}</a>
 										<div id="mergely{{dr.id}}">
 										</div>
 								<!-- Remediation Details -->
-										</li>
+										</ul>
 								</div>
 							</div>
 						  </div>
@@ -93,12 +108,12 @@
 						<!-- mitigation section -->
 						
 						  <!-- Accordion card -->
-						  <li ng-repeat="mitigation in mitigations" style="border-bottom: 1px solid #ddd">
+						  <li ng-repeat="mitigation in mitigations" style="border-bottom: 1px solid #ddd;list-style-type:none;">
 						  <div class="card">
 
 							<!-- Card header -->
 							<div class="card-header" role="tab" id="mitigAccMain{{$index}}">
-							  <a data-toggle="collapse" data-parent="#mitigAccMain" href="#mitigAccMainCollapse{{$index}}" aria-expanded="true"
+							  <a data-toggle="collapse" data-parent="#mitigAccMain" href="#mitigAccMainCollapse{{$index}}" ng-click="textAreaFunc()" aria-expanded="true"
 								aria-controls="mitigAccMainCollapse{{$index}}">
 								<h6 class="mb-0">
 								  [{{$index+1}}] Mitigation - Web Server / IIS
@@ -165,6 +180,7 @@
 		</div>
 	</div>
 	
+	<link rel="stylesheet" type="text/css" href="css/mergely.css" />	
 
     <script src="js/jquery.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
@@ -180,14 +196,19 @@
 				var url = new URL(window.location.href);
 				_issueName = url.searchParams.get("vuln");
 				$scope.issueName = _issueName;
+				$scope.faqs = [];
 				
-				$scope.files = jsonData.project.supported[_issueName].files;
-				var filesVar = jsonData.project.supported[_issueName].files;
-				var filesMapVar = new Map();
-				for(i=0; i<filesVar.length; i++) {
-					filesMapVar.set(filesVar[i].file,filesVar[i].items);
+				faqsObj = jsonData.project.supported[_issueName].remediation.remediation.faqs;
+				
+				if(faqsObj != null){
+					if (isArray(faqsObj.faq)){
+						$scope.faqs = faqsObj.faq;
+					}else{
+						$scope.faqs.push(faqsObj.faq);
+					}
 				}
-				$scope.filesMap = filesMapVar;
+				
+				$scope.files = jsonData.project.supported[_issueName].files;				
 				$scope.mitigations = jsonData.project.supported[_issueName].remediation.remediation.mitigations.mitigation;
 
 				//filesObj = jsonData.project.supported[_issueName].files;
@@ -226,7 +247,7 @@
 									readOnly: true
 								},
 								width: 'auto',
-								height: '400px',
+								height: '300px',
 								lhs: function(setValue) {
 									setValue(originalcode);
 								},
@@ -235,6 +256,99 @@
 								}
 							});					
 				}
+				var textAreaWhitelist = ["message"]
+				$scope.scrub=scrub;
+				function scrub(sourceText, valueToScrub){
+					newTextValue = "";
+					
+					if(sourceText.length > 0){
+						scrubIndex = sourceText.indexOf(valueToScrub);
+						
+						newTextValue = sourceText.substr(0, scrubIndex);
+						newTextValue = newTextValue + sourceText.substr(scrubIndex + valueToScrub.length);
+					}
+					return newTextValue
+				}
+		
+				$scope.textAreaFunc=textAreaFunc;
+				$scope.isLoaded=false;
+					function textAreaFunc(){
+						var textAreas = Array.prototype.slice.call(document.getElementsByTagName("textarea"));
+						if(textAreas != null && !$scope.isLoaded){
+						for (i = 0; i < textAreas.length; i++) {
+							if(!textAreaWhitelist.includes(textAreas[i].getAttribute("id"))){
+							
+								highlightObjects = []
+								
+								var emTags = [{s:"<em class=\"red\">",r:"red"}, {s:"<em class=\"blue\">",r:"blue"}, {s:"<em class=\"bold\">",r:"bold"}];
+								
+								//temporary fix replacing <em class="red"> tags
+								newTextValue = textAreas[i].value;
+								
+								emTags.forEach(function(itemTag){
+									// search for em tags
+									index = newTextValue.indexOf(itemTag.s)-1;
+									while(index > 0){
+										startIndex = index;
+										endIndex = newTextValue.indexOf("</em>", startIndex);
+										
+										lastCrStart = newTextValue.lastIndexOf("\n", startIndex);
+										lineNumStart = newTextValue.substr(0, startIndex).split("\n").length-1;
+										startIndex = index - lastCrStart;
+										//startIndex -= itemTag.s.length;
+										
+										lastCrEnd = newTextValue.lastIndexOf("\n", endIndex);
+										lineNumEnd = newTextValue.substr(0, endIndex).split("\n").length-1;
+										endIndex = (endIndex - itemTag.s.length) - lastCrEnd;
+										
+										newTextValue = scrub(newTextValue, itemTag.s);
+										newTextValue = scrub(newTextValue, "</em>");
+										index = newTextValue.indexOf(itemTag.s);
+										
+										cName = ""
+										switch(itemTag.r){
+											case "red":
+												cName = "vuln-highlight"; break;
+											case "blue":
+												cName = "nonvuln-highlight"; break;
+											case "bold":
+												cName = "bold"; break;
+											default: cName = ""; break;
+										}
+										
+										var styleObj = {
+											from:{line: lineNumStart, ch: startIndex}, 
+											to:{line: lineNumEnd, ch: endIndex}, 
+											obj:{className: cName}
+										}
+										
+										highlightObjects.push(styleObj);
+									}
+								});
+								
+								textAreas[i].value = newTextValue
+							
+								var editor = CodeMirror.fromTextArea(textAreas[i], {
+										mode: "javascript", 
+										autoRefresh: true,
+										readOnly: true,
+										lineNumbers: true
+									});
+								
+								editor.setSize(null,500);
+								
+								highlightObjects.forEach(function(itemStyle){
+									editor.markText(itemStyle.from, itemStyle.to, itemStyle.obj)
+								});
+								
+								editor.save();
+								editor.refresh();
+							}
+						}
+						$scope.isLoaded=true;
+						}
+					};
+				
 		});
 	</script>  
 </html>
