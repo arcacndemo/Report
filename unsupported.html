@@ -253,7 +253,7 @@
 												<div id="issueListAccSubCollapse{{itm.id}}_{{$index}}" class="collapse" role="tabpanel" aria-labelledby="issueListAccSub{{itm.id}}_{{$index}}" data-parent="#issueListAccSub{{itm.id}}">
 													<div class="card-body">
 													<!-- Issue list Details -->
-														<div class="col-md-11 nonvuln">
+														<div class="col-md-11 nonvuln" style="width: 100%;">
 															<label for="nonvuln">Snippet</label>
 															<textarea id="issueListAccSubnonvulncode{{itm.id}}_{{$index}}">
 {{itm.snippet}}
@@ -366,9 +366,12 @@
 				textAreas.forEach(function(item){
 					
 					if(!textAreaWhitelist.includes(item.getAttribute("id"))){
-					
+
 						highlightObjects = [];
-						tempValue = item.value.replace(/&quot;/g, '\"');
+						tempValue = item.value;
+						tempValue = tempValue.replace(/&quot;/g,'\"');
+						tempValue = tempValue.replace(/&gt;/g,'>');
+						tempValue = tempValue.replace(/&lt;/g,'<');
 						item.innerHtml = "";
 						item.value = tempValue;
 
