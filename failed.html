@@ -245,7 +245,7 @@
 									<ul ng-repeat="dr in f.items">
 										<div class="col-md-6 vuln">
 											<textarea id="Issuelistlvulncode{{$index}}">
-													{{dr.originalCode}}
+													{{dr.originalCode.join('\n')}}
 												</textarea>
 										</div>
 									</ul>
