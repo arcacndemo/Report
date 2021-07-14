@@ -46,29 +46,6 @@
 							<ul class="cbp-ntsubaccordion" >
 								<li ng-repeat="(k,d) in data.project.supported" style="border-bottom: 1px solid #ddd">
 									<a href="supported.html?vuln={{k}}" target="_blank">{{k}}</a>
-									<div class="cbp-ntcontent">
-										<!-- Tab links -->
-										<div class="tab">
-										  <button class="tablinks" ng-click="openTab($event, 'RemediatedCode'+($index))">Remediation </button>
-										  <button class="tablinks" ng-click="openTab($event, 'Mitigation'+($index))">Mitigation</button>
-										</div>
-										<!-- Tab content -->
-										<div id="RemediatedCode{{$index}}" class="tabcontent">
-										<ul class="cbp-ntsubaccordion" ng-repeat="row in d.files">
-										<h4 class="cbp-nttrigger">File: {{row.file}}</h4>
-										<li ng-repeat="dr in row.items" style="border-bottom: 1px solid #ddd">
-											<a href ng-click="codeDiffMerge((dr.id),(dr.originalCode),(dr.remediatedCode))">Issue ID: {{dr.id}}</a>		
-											<div id="mergely{{dr.id}}">
-											</div>
-										</li>
-										<br />
-										</ul>
-										</div>
-										<div id="Mitigation{{$index}}" class="tabcontent">
-										  
-										</div>
-										
-									</div>
 								</li>	
 							</ul>
 						</div>
@@ -78,7 +55,8 @@
 						<div class="cbp-ntcontent">
 							<ul class="cbp-ntsubaccordion">
 								<li ng-repeat="(k,d) in data.project.unsupported" style="border-bottom: 1px solid #ddd">
-									<h4 class="cbp-nttrigger">{{k}}</h4>
+									<!--<h4 class="cbp-nttrigger">{{k}}</h4>-->
+									<a href="unsupported.html?vuln={{k}}" target="_blank">{{k}}</a>
 								</li>
 							</ul>
 						</div>
@@ -88,8 +66,8 @@
 						<div class="cbp-ntcontent">
 							<ul class="cbp-ntsubaccordion">
 								<li ng-repeat="(k,d) in data.project.failed" style="border-bottom: 1px solid #ddd">
-									<h4 class="cbp-nttrigger">{{k}}</h4>
-									<a href="supported.html?vuln=Path%20Manipulation" target="_blank">{{k}}</a>
+									<!--<h4 class="cbp-nttrigger">{{k}}</h4>-->
+									<a href="supported.html?vuln={{k}}" target="_blank">{{k}}</a>
 								</li>
 							</ul>
 						</div>						
