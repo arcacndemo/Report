@@ -206,6 +206,7 @@
 					</div>
 				</div>
 				<div class="tab-pane fade" id="issueList" role="tabpanel" aria-labelledby="issueList-tab">	
+					<h3 ng-bind="'List of all issues in ' + (issueName)"></h3>
 						<!-- issuelist accordion start -->
 					<div class="accordion md-accordion" id="IssueListAccMain" role="tablist" aria-multiselectable="true" >
 						<!-- issuelist section -->
@@ -244,6 +245,7 @@
 								  <div class="card-body">
 									<ul ng-repeat="dr in f.items">
 										<div class="col-md-11 vuln" style="width: 100%;">
+											<label for="vuln">Snippet</label>
 											<textarea id="Issuelistlvulncode{{$index}}">
 													{{dr.originalCode.join('\n')}}
 												</textarea>
