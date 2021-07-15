@@ -213,8 +213,6 @@
 						<!-- issuelist section -->
 						<!-- Accordion card -->
 						<li ng-repeat="f in files" style="border-bottom: 1px solid #ddd;list-style-type:none;">
-						  <div class="card">
-
 							<!-- Card header -->
 							<div class="card-header" role="tab" id="IssueListAccMain{{$index}}">
 								  <a data-toggle="collapse" data-parent="#IssueListAccMain" href="#remedAccMainCollapse{{$index}}" ng-click="textAreaFunc()" aria-expanded="true"
@@ -226,44 +224,42 @@
 							</div>
 
 							<!-- Card body -->
-							<div id="remedAccMainCollapse{{$index}}" class="collapse" role="tabpanel" aria-labelledby="IssueListAccMain{{$index}}"
-								  data-parent="#IssueListAccMain">
-								<div class="card-body">
-								<!-- issuelist Details -->
+							<div id="remedAccMainCollapse{{$index}}" class="collapse" role="tabpanel" aria-labelledby="IssueListAccMain{{$index}}" data-parent="#IssueListAccMain">
+							<div class="card-body">	  
+								  <div class="accordion md-accordion" id="issueListAccSub{{itm.id}}" role="tablist" aria-multiselectable="true" > 
+								  <div class="card">
+									<div class="card-header" role="tab" >
+									<!-- issuelist Details -->
+											<ul ng-repeat="dr in f.items">
+												<a data-toggle="collapse" data-parent="#IssueListAccMain{{$index}}" href="#remedSubAccMainCollapse{{files.indexOf(f)}}" aria-expanded="true"
+													aria-controls="remedSubAccMainCollapse{{files.indexOf(f)}}">
+													ID: {{dr.id}}&nbsp;&nbsp;&nbsp;&nbsp;Line: {{dr.line}}
+												</a>
+											 </ul>
+									</div>
+									<!-- issuelist Details -->
+									<div id="remedSubAccMainCollapse{{$index}}" class="collapse" role="tabpanel" aria-labelledby="IssueListAccMain{{$index}}" data-parent="remedAccMainCollapse{{$index}}">
+									  <div class="card-body">
 										<ul ng-repeat="dr in f.items">
-											<a data-toggle="collapse" data-parent="#IssueListAccMain{{$index}}" href="#remedSubAccMainCollapse{{files.indexOf(f)}}" aria-expanded="true"
-												aria-controls="remedSubAccMainCollapse{{files.indexOf(f)}}">
-												ID: {{dr.id}}&nbsp;&nbsp;&nbsp;&nbsp;Line: {{dr.line}}
-											</a>
-										 </ul>
-								</div>
-								<!-- issuelist Details -->
-										<div id="remedSubAccMainCollapse{{$index}}" class="collapse" role="tabpanel" aria-labelledby="IssueListAccMain{{$index}}"
-								  data-parent="remedAccMainCollapse{{$index}}">
-								  <div class="card-body">
-									<ul ng-repeat="dr in f.items">
-										<div class="col-md-11 vuln" style="width: 100%;">
-											<label for="vuln">Snippet</label>
-											<textarea id="Issuelistlvulncode{{$index}}">
-													{{dr.originalCode.join('\n')}}
-													
-													<!--<a href ng-click="codeDiffMerge((dr.id),(dr.originalCode),(dr.remediatedCode))">[{{$index+1}}] Issue ID: {{dr.id}}</a> -->
-													
-												</textarea>
-										</div>
-									</ul>
-								  </div>
-						
-								</div>
-										
+											<div class="col-md-11 vuln" style="width: 100%;">
+												<label for="vuln">Snippet</label>
+												<textarea id="Issuelistlvulncode{{$index}}">
+														{{dr.originalCode.join('\n')}}
+													</textarea>
+											</div>
+										</ul>
+									  </div>
+									</div>
+									
+									</div>
+									</div>
+								</div>	
+	
 							</div>
-							 
-							
-						  </div>
 						</li>
 						  <!-- Accordion card -->						  						  
 					</div>
-					<!-- mitigationn accordion end -->	
+					<!-- Issue List accordion end -->	
 				</div>
 					
 				</div>
