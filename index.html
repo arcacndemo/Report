@@ -4,7 +4,7 @@
 		<meta charset="UTF-8" />
 		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"> 
 		<meta name="viewport" content="width=device-width, initial-scale=1.0"> 
-		<title>IAST VulnApp Report</title>
+		<title>Auto-remediation report</title>
 		<meta name="description" content="IASP Vulnerable Report" />
 		<meta name="keywords" content="nested, accordion, simple, vertical, web development, css3, javascript" />
 		<link rel="shortcut icon" href="../favicon.ico">
@@ -25,11 +25,7 @@
 		<script src="js/codediff-mergely.js"></script>		
 		<script src="data.json"></script>
 	</head>
-	<script type="text/javascript">
-		//$(document).ready(
-		//codeDiffMerge()
-		//);
-	</script>	
+	
 	<body ng-app="myapp" ng-controller="ReportObject">
 		<div class="container">
 			<header class="clearfix">
@@ -42,10 +38,10 @@
 					<li>
 						<h3 class="cbp-nttrigger">Successfully remediated items: {{issueCounts.supported}}</h3>
 						<div class="cbp-ntcontent">
-							
 							<ul class="cbp-ntsubaccordion" >
 								<li ng-repeat="(k,d) in data.project.supported" style="border-bottom: 1px solid #ddd">
-									<a href="supported.html?vuln={{k}}" target="_blank">{{k}}</a>
+									<a href="supported.html?vuln={{k}}" target="_blank" ng-if = "d.remediation != null">{{k}}</a>
+									<a href="" ng-if = "d.remediation == null">{{k}} - <em style="color:red;">No documented remediation details</em></a>
 								</li>	
 							</ul>
 						</div>
@@ -56,7 +52,8 @@
 							<ul class="cbp-ntsubaccordion">
 								<li ng-repeat="(k,d) in data.project.unsupported" style="border-bottom: 1px solid #ddd">
 									<!--<h4 class="cbp-nttrigger">{{k}}</h4>-->
-									<a href="unsupported.html?vuln={{k}}" target="_blank">{{k}}</a>
+									<a href="unsupported.html?vuln={{k}}" target="_blank" ng-if = "d.remediation != null">{{k}}</a>
+									<a href="" ng-if = "d.remediation == null">{{k}} - <em style="color:red;">No documented remediation details</em></a>
 								</li>
 							</ul>
 						</div>
@@ -67,7 +64,8 @@
 							<ul class="cbp-ntsubaccordion">
 								<li ng-repeat="(k,d) in data.project.failed" style="border-bottom: 1px solid #ddd">
 									<!--<h4 class="cbp-nttrigger">{{k}}</h4>-->
-									<a href="failed.html?vuln={{k}}" target="_blank">{{k}}</a>
+									<a href="failed.html?vuln={{k}}" target="_blank" ng-if = "d.remediation != null">{{k}}</a>
+									<a href="" ng-if = "d.remediation == null">{{k}} - <em style="color:red;">No documented remediation details</em></a>
 								</li>
 							</ul>
 						</div>						
@@ -121,35 +119,6 @@
 					  evt.currentTarget.className += " active";
 					  //codeDiffMerge();
 				}	
-				$scope.codeDiffMerge=codeDiffMerge;
-				function codeDiffMerge(index,originalcode,remediatedcode) {
-					var i, mergelycontent, mergelyfullscreen,testvar;
-					originalcode = originalcode.join('\n');
-					remediatedcode = remediatedcode.join('\n');
-					//mergelycontent = document.getElementsByClassName("mergelydiff");
-					testvar = "mergely"+(index);
-					mergelyfullscreen = document.getElementById(testvar);
-					//for(i = 1; i < mergelycontent.length; i++) {
-							$('#mergely'+index).mergely({
-								license: 'lgpl',
-								cmsettings: {
-									readOnly: true
-								},
-								width: 'auto',
-								height: '400px',
-								lhs: function(setValue) {
-									setValue(originalcode);
-								},
-								rhs: function(setValue) {
-									setValue(remediatedcode);
-								}
-							});
-						//}
-					//document.getElementById(testvar).style.position="static";
-					//document.getElementById(testvar).style.width="1263.33px";
-					//document.getElementById(testvar).style.height="346px";
-					
-				}
 		});
 	</script>
 </html>

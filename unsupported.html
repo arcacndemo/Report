@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Unsupported issue details</title>
+    <title>Unsupported vulnerability details</title>
 
     <meta name="description" content="">
     <meta name="author" content="">
@@ -55,8 +55,8 @@
 					<div class="tab-pane fade active show" id="faq" role="tabpanel" aria-labelledby="faq-tab">
 						<div ng-repeat="faq in faqs">
 							<div class="post-main-info">
-								<p class="parent-p" style="border-bottom: 1px solid #ddd;"><strong>{{faq.question}}</strong></p>
-								<p class="parent-p">{{faq.answer}}</p>	
+								<p class="parent-p" style="border-bottom: 1px solid #ddd;"><strong>{{htmlDecode(faq.question)}}</strong></p>
+								<p class="parent-p">{{htmlDecode(faq.answer)}}</p>	
 							</div>
 							<div>&nbsp;</div>
 						</div>
@@ -79,7 +79,8 @@
 							  <a data-toggle="collapse" data-parent="#remedAccMain" href="#remedAccMainCollapse{{$index}}" aria-expanded="true"
 								aria-controls="remedAccMainCollapse{{$index}}">
 								<h6 class="mb-0">
-								  {{r.abstract}}&nbsp;&nbsp;&nbsp;&nbsp;Language: {{r["@type"]}}
+								  {{htmlDecode(r.abstract)}}<br />
+								  Language: {{htmlDecode(r["@type"])}}
 								</h6>
 							  </a>
 							</div>
@@ -93,7 +94,7 @@
 								<div class="post-main-info">
 									<div>
 										<p id="remedAccMaincomments{{$index}}">
-											{{r.comments}}
+											{{htmlDecode(r.comments)}}
 											</p>
 										</div>
 									</div>
@@ -102,7 +103,7 @@
 								<div class="post-main-info">
 									<div>
 									<p id="remedAccMainimpacts{{$index}}">
-										{{r.impact}}
+										{{htmlDecode(r.impact)}}
 									</P>
 									</div>
 								</div>
@@ -111,13 +112,13 @@
 									<div class="col-md-6 vuln">
 										<label for="vuln">Vulnerable code</label>
 										<textarea id="remedAccMainvulncode{{$index}}">
-{{r.vulncode}}
+{{htmlDecode(r.vulncode)}}
 										</textarea>	
 									</div>
 									<div class="col-md-6 nonvuln">
 										<label for="nonvuln">Non-vulnerable code</label>
 										<textarea id="remedAccMainnonvulncode{{$index}}">
-{{r.nonvulncode}}
+{{htmlDecode(r.nonvulncode)}}
 										</textarea>
 									</div>
 								</div>
@@ -148,7 +149,8 @@
 							  <a data-toggle="collapse" data-parent="#mitigAccMain" href="#mitigAccMainCollapse{{$index}}" aria-expanded="true"
 								aria-controls="mitigAccMainCollapse{{$index}}">
 								<h6 class="mb-0">
-									{{m.system}}&nbsp;-&nbsp;{{m.abstract}}
+									{{htmlDecode(m.abstract)}}<br />
+									{{htmlDecode(m.system)}}
 								</h6>
 							  </a>
 							</div>
@@ -162,7 +164,7 @@
 								<div class="post-main-info">
 									<div>
 										<p id="mitigAccMainsystem{{$index}}">
-											{{m.system}}										
+											{{htmlDecode(m.system)}}										
 										</p>
 									</div>
 								</div>
@@ -171,7 +173,7 @@
 								<div class="post-main-info">
 									<div>
 										<p id="mitigAccMainconfiguration{{$index}}">
-											{{m.configuration}}										
+											{{htmlDecode(m.configuration)}}										
 										</p>
 									</div>
 								</div>
@@ -180,7 +182,7 @@
 								<div class="post-main-info">
 									<div>
 									<p id="mitigAccMaincomments{{$index}}">
-										{{m.comments}}
+										{{htmlDecode(m.comments)}}
 									</P>
 									</div>
 								</div>
@@ -189,13 +191,13 @@
 									<div class="col-md-6 vuln">
 										<label for="vuln">Backend</label>
 										<textarea id="mitigAccMainvulncode{{$index}}">
-{{m.backend}}
+{{htmlDecode(m.backend)}}
 										</textarea>	
 									</div>
 									<div class="col-md-6 nonvuln">
 										<label for="nonvuln">Frontend</label>
 										<textarea id="mitigAccMainnonvulncode{{$index}}">
-{{m.frontend}}
+{{htmlDecode(m.frontend)}}
 										</textarea>
 									</div>
 								</div>
@@ -213,18 +215,18 @@
 					<!-- Issue list accordion start -->
 				<div class="tab-pane fade" id="issueList" role="tabpanel" aria-labelledby="issueList-tab">			
 					<div>			
-						<h3>List of all issues in SQL Injection</h3>
+						<h3>List of all issues of {{issueName}}</h3>
 
 						<div class="accordion md-accordion" id="issueListMain{{$index}}" role="tablist" aria-multiselectable="true" >
 							<!-- Issue list section -->
 							
 							<!-- Accordion card -->
-							<div class="card" ng-repeat = "i in issueListData">
+							<div class="card" ng-repeat = "(iIndex,i) in issueListData">
 
 								<!-- Card header -->
-								<div class="card-header" role="tab" id="issueListAccMain{{$index}}">
-								<a data-toggle="collapse" data-parent="#issueListAccMain{{$index}}" href="#issueListAccMainCollapse{{$index}}" aria-expanded="true"
-									aria-controls="issueListAccMainCollapse{{$index}}">
+								<div class="card-header" role="tab" id="issueListAccMain{{iIndex}}">
+								<a data-toggle="collapse" data-parent="#issueListAccMain{{iIndex}}" href="#issueListAccMainCollapse{{iIndex}}" aria-expanded="true"
+									aria-controls="issueListAccMainCollapse{{iIndex}}">
 									<h6 class="mb-0">
 										File: {{i.file}}
 									</h6>
@@ -232,31 +234,32 @@
 								</div>
 
 								<!-- Card body -->
-								<div id="issueListAccMainCollapse{{$index}}" class="collapse" role="tabpanel" aria-labelledby="issueListAccMain{{$index}}" data-parent="#issueListAccMain{{$index}}">
+								<div id="issueListAccMainCollapse{{iIndex}}" class="collapse" role="tabpanel" aria-labelledby="issueListAccMain{{iIndex}}" data-parent="#issueListAccMain{{iIndex}}">
 									<div class="card-body">
 									<!-- Issue list Details -->
-										<div class="accordion md-accordion" id="issueListAccSub{{itm.id}}" role="tablist" aria-multiselectable="true" >
+										<div class="accordion md-accordion" id="issueListAccSub{{iIndex}}" role="tablist" aria-multiselectable="true" >
 											<!-- Issue list section -->
 											
 											<!-- Accordion card -->
-											<div class="card" ng-repeat = "itm in i.items">
+											<div class="card" ng-repeat = "(itmIndex, itm) in i.items">
 												<!-- Card header -->
-												<div class="card-header" role="tab" id="issueListAccSub{{itm.id}}">
-													<a data-toggle="collapse" data-parent="#issueListAccSub{{itm.id}}" href="#issueListAccSubCollapse{{itm.id}}_{{$index}}" aria-expanded="true"
+												<div class="card-header" role="tab" id="issueListAccSub{{itmIndex}}_{{itm.id}}">
+													<a data-toggle="collapse" data-parent="#issueListAccSub{{iIndex}}" href="#issueListAccSubCollapse{{itm.id}}_{{$index}}" aria-expanded="true"
 														aria-controls="issueListAccSubCollapse{{itm.id}}_{{$index}}">
 														<h6 class="mb-0">
-															ID: {{itm.id}}&nbsp;&nbsp;&nbsp;&nbsp;Line: {{itm.line}}
+															ID: {{itm.id}}<br />
+															Line: {{itm.line}}
 														</h6>
 													</a>
 													</div>
 												<!-- Card body -->
-												<div id="issueListAccSubCollapse{{itm.id}}_{{$index}}" class="collapse" role="tabpanel" aria-labelledby="issueListAccSub{{itm.id}}_{{$index}}" data-parent="#issueListAccSub{{itm.id}}">
+												<div id="issueListAccSubCollapse{{itm.id}}_{{$index}}" class="collapse" role="tabpanel" aria-labelledby="issueListAccSub{{itmIndex}}_{{itm.id}}" data-parent="#issueListAccSub{{itmIndex}}_{{itm.id}}">
 													<div class="card-body">
 													<!-- Issue list Details -->
-														<div class="col-md-11 nonvuln" style="width: 100%;">
-															<label for="nonvuln">Snippet</label>
-															<textarea id="issueListAccSubnonvulncode{{itm.id}}_{{$index}}">
-{{itm.snippet}}
+														<div class="col-md-12 nonvuln" style="width: 100%;">
+															<label for="vuln">Snippet</label>
+															<textarea id="issueListAccSubvulncode{{itm.id}}_{{$index}}">
+{{htmlDecode(itm.snippet)}}
 															</textarea>
 														</div>
 													<!-- Issue list Details -->
@@ -281,6 +284,7 @@
 
     <script src="js/jquery-3.3.1.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
+	<script src="js/utils.js"></script>
 
 	<script>
 	
@@ -327,122 +331,21 @@
 				}
 
 				$scope.issueListData = jsonData.project.unsupported[_issueName].files;
+				
+				// text area id whitelist
+				var textAreaWhitelist = ["message"];
 
 				$scope.$watch('$viewContentLoaded', 
 					function() { 
 						$timeout(function() {
-							textAreaFunc();
+							textAreaFunc(textAreaWhitelist);
 						},0);    
 				});
 
+				$scope.htmlDecode = htmlDecode;
+
 	});
-
-
-	function isArray(what) {
-    	return Object.prototype.toString.call(what) === '[object Array]';
-	}
-
-		var textAreaWhitelist = ["message"]
-	
-		function scrub(sourceText, valueToScrub){
-			newTextValue = "";
-			
-			if(sourceText.length > 0){
-				scrubIndex = sourceText.indexOf(valueToScrub);
-				
-				newTextValue = sourceText.substr(0, scrubIndex);
-				newTextValue = newTextValue + sourceText.substr(scrubIndex + valueToScrub.length);
-			}
-			return newTextValue
-		}
-		
-		
-
-
-		function textAreaFunc(){
-			var textAreas = Array.prototype.slice.call(document.getElementsByTagName("textarea"));
-			
-			if(textAreas != null){
-				textAreas.forEach(function(item){
-					
-					if(!textAreaWhitelist.includes(item.getAttribute("id"))){
-
-						highlightObjects = [];
-						tempValue = item.value;
-						tempValue = tempValue.replace(/&quot;/g,'\"');
-						tempValue = tempValue.replace(/&gt;/g,'>');
-						tempValue = tempValue.replace(/&lt;/g,'<');
-						item.innerHtml = "";
-						item.value = tempValue;
-
-						var emTags = [{s:"<em class=\"red\">",r:"red"}, {s:"<em class=\"blue\">",r:"blue"}, {s:"<em class=\"bold\">",r:"bold"}];
-						
-						//temporary fix replacing <em class="red"> tags
-						newTextValue = item.value;
-						
-						emTags.forEach(function(itemTag){
-							// search for em tags
-							index = newTextValue.indexOf(itemTag.s)-1;
-							while(index > 0){
-								startIndex = index;
-								endIndex = newTextValue.indexOf("</em>", startIndex);
-								
-								lastCrStart = newTextValue.lastIndexOf("\n", startIndex);
-								lineNumStart = newTextValue.substr(0, startIndex).split("\n").length-1;
-								startIndex = index - lastCrStart;
-								//startIndex -= itemTag.s.length;
-								
-								lastCrEnd = newTextValue.lastIndexOf("\n", endIndex);
-								lineNumEnd = newTextValue.substr(0, endIndex).split("\n").length-1;
-								endIndex = (endIndex - itemTag.s.length) - lastCrEnd;
-								
-								newTextValue = scrub(newTextValue, itemTag.s);
-								newTextValue = scrub(newTextValue, "</em>");
-								index = newTextValue.indexOf(itemTag.s);
-								
-								cName = ""
-								switch(itemTag.r){
-									case "red":
-										cName = "vuln-highlight"; break;
-									case "blue":
-										cName = "nonvuln-highlight"; break;
-									case "bold":
-										cName = "bold"; break;
-									default: cName = ""; break;
-								}
-								
-								var styleObj = {
-									from:{line: lineNumStart, ch: startIndex}, 
-									to:{line: lineNumEnd, ch: endIndex}, 
-									obj:{className: cName}
-								}
-								
-								highlightObjects.push(styleObj);
-							}
-						});
-						
-						item.value = newTextValue
-					
-						var editor = CodeMirror.fromTextArea(item, {
-								mode: "javascript", 
-								autoRefresh: true,
-								readOnly: true,
-								lineNumbers: true
-							});
-						
-						editor.setSize(null,"100%");
-						
-						highlightObjects.forEach(function(itemStyle){
-							editor.markText(itemStyle.from, itemStyle.to, itemStyle.obj)
-						});
-						
-						editor.save();
-						editor.refresh();
-					}
-				});
-			}
-		}
-		                                           
+                                           
 	</script>
   </body>
 </html>
