@@ -86,19 +86,9 @@
 								<div class="card-body">
 								<!-- Remediation Details -->
 									<ul ng-repeat="dr in f.items">
-									<div class="accordion md-accordion" id="remedSubAccMain" role="tablist" aria-multiselectable="true" >
-									<div class="card">
-										<div class="card-header" role="tab" id="remedSubAccMain{{$index}}">
-												<a data-toggle="collapse" data-parent="#remedSubAccMain" href="#remedSubAccMainCollapse{{$index}}" aria-expanded="true" aria-controls="remedSubAccMainCollapse{{$index}}"ng-click="codeDiffMerge((dr.id),(dr.originalCode),(dr.remediatedCode))">[{{$index+1}}] Issue ID: {{dr.id}}</a>
-										</div>
-										<div id="remedSubAccMainCollapse{{$index}}" class="collapse" role="tabpanel" aria-labelledby="remedSubAccMain{{$index}}" data-parent="#remedSubAccMain">
-											<div class="card-body">
-													<div class="col-lg-12 vuln" id="mergely{{dr.id}}">
-													</div>
-											</div>
-										</div>
-									</div>
-									</div>												
+									<a ng-click="codeDiffMerge((dr.id),(dr.originalCode),(dr.remediatedCode))">[{{$index+1}}] Issue ID: {{dr.id}}</a>
+												<div id="mergely{{dr.id}}">
+												</div>												
 								 <!--Remediation Details -->
 									</ul>
 								</div>
@@ -245,12 +235,12 @@
 					  //codeDiffMerge();
 				}	
 				$scope.codeDiffMerge=codeDiffMerge;
+				$scope.mergelyMap = new Map();	
 				function codeDiffMerge(index,originalcode,remediatedcode) {
-					var i, mergelycontent, mergelyfullscreen,testvar;
+					var i, mergelycontent, mergelyfullscreen,mergelyID;
 					originalcode = originalcode.join('\n');
 					remediatedcode = remediatedcode.join('\n');
-					testvar = "mergely"+(index);
-					mergelyfullscreen = document.getElementById(testvar);
+					mergelyID = "mergely"+(index);
 							$('#mergely'+index).mergely({
 								license: 'lgpl',
 								cmsettings: {
@@ -264,8 +254,15 @@
 								rhs: function(setValue) {
 									setValue(remediatedcode);
 								}
-							});					
+							});	
+					if($scope.mergelyMap[mergelyID]=== undefined){
+                        $scope.mergelyMap[mergelyID]=true;
+                    } else {
+                        $scope.mergelyMap[mergelyID] ? document.getElementById(mergelyID).style.display = "none" : document.getElementById(mergelyID).style.display = "block";
+                        $scope.mergelyMap[mergelyID] = !$scope.mergelyMap[mergelyID];
+                    }							
 				}
+												
 				
 				$scope.$watch('$viewContentLoaded', 
 						function() { 
