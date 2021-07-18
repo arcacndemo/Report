@@ -333,7 +333,7 @@
 				$scope.issueListData = jsonData.project.unsupported[_issueName].files;
 				
 				// text area id whitelist
-				var textAreaWhitelist = ["message"];
+				var textAreaWhitelist = [];
 
 				$scope.$watch('$viewContentLoaded', 
 					function() { 

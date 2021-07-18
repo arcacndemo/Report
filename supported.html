@@ -5,10 +5,10 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Vulnerability Details</title>
+    <title>Supported vulnerability details</title>
 
-    <meta name="description" content="Source code generated using layoutit.com">
-    <meta name="author" content="LayoutIt!">
+    <meta name="description" content="">
+    <meta name="author" content="">
 
     <link href="css/bootstrap.min.css" rel="stylesheet" />
     <link href="css/style.css" rel="stylesheet" />
@@ -66,10 +66,12 @@
 					<!-- remediation accordion start -->
 					<div class="accordion md-accordion" id="remedAccMain" role="tablist" aria-multiselectable="true" >
 						<!-- remediation section -->
+
+						<div><h4>Instances</h4></div>
+						<div>&nbsp;</div>
 						<!-- Accordion card -->
 						<li ng-repeat="f in files" style="border-bottom: 1px solid #ddd;list-style-type:none;">
 						  <div class="card">
-
 							<!-- Card header -->
 							<div class="card-header" role="tab" id="remedAccMain{{$index}}">
 								  <a data-toggle="collapse" data-parent="#remedAccMain" href="#remedAccMainCollapse{{$index}}" aria-expanded="true"
@@ -85,12 +87,33 @@
 								  data-parent="#remedAccMain">
 								<div class="card-body">
 								<!-- Remediation Details -->
-									<ul ng-repeat="dr in f.items">
-									<a ng-click="codeDiffMerge((dr.id),(dr.originalCode),(dr.remediatedCode))">[{{$index+1}}] Issue ID: {{dr.id}}</a>
-												<div id="mergely{{dr.id}}">
-												</div>												
+									<div class="accordion md-accordion" id="remedAccSub" role="tablist" aria-multiselectable="true" >
+										<div class="card" ng-repeat="dr in f.items">
+											<div class="card-header" role="tab" id="remedAccSub{{dr.id}}">
+												<a data-toggle="collapse" data-parent="#remedAccSub" href="#remedAccSubCollapse{{dr.id}}" aria-expanded="true"
+												aria-controls="remedAccSubCollapse{{dr.id}}"
+												ng-click="codeDiffMerge((dr.id),(dr.originalCode),(dr.remediatedCode))">
+												<h6 class="mb-0">
+													[{{$index+1}}] Issue ID: {{dr.id}}
+												</h6>
+												</a>
+										</div>
+				
+										<div id="remedAccSubCollapse{{dr.id}}" class="collapse" role="tabpanel" aria-labelledby="remedAccSub{{dr.id}}"
+												data-parent="#remedAccSub" data-index="{{dr.id}}">
+													<div class="card-body" style="height:350px;">
+														<div id="mergelyBodyContainer{{dr.id}}" style="display: none;">
+															<div id="mergely{{dr.id}}">
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+				
+										</div>
+									</div>
 								 <!--Remediation Details -->
-									</ul>
+									</div>
 								</div>
 							</div>
 						  </div>
@@ -188,11 +211,17 @@
 	<script src="js/searchcursor.js"></script>	
 	<script src="js/mergely.js"></script>
 	<script src="js/codediff-mergely.js"></script>		
-	<script src="data.json"></script>	
+	<script src="data.json"></script>
+	<script src="js/utils.js"></script>	
+
   </body>
 	<script>
+		
+			
+
 		var app = angular.module("myapp", []);
-			app.controller("SupportedObject", function($timeout, $scope) {				
+			app.controller("SupportedObject", function($timeout, $scope) {	
+						
 				var url = new URL(window.location.href);
 				_issueName = url.searchParams.get("vuln");
 				$scope.issueName = _issueName;
@@ -207,6 +236,7 @@
 						$scope.faqs.push(faqsObj.faq);
 					}
 				}
+
 				
 				$scope.files = jsonData.project.supported[_issueName].files;				
 				$scope.mitigations = jsonData.project.supported[_issueName].remediation.remediation.mitigations.mitigation;
@@ -234,8 +264,9 @@
 					  evt.currentTarget.className += " active";
 					  //codeDiffMerge();
 				}	
+
 				$scope.codeDiffMerge=codeDiffMerge;
-				$scope.mergelyMap = new Map();	
+				//$scope.mergelyMap = new Map();	
 				function codeDiffMerge(index,originalcode,remediatedcode) {
 					var i, mergelycontent, mergelyfullscreen,mergelyID;
 					originalcode = originalcode.join('\n');
@@ -247,129 +278,53 @@
 									readOnly: true
 								},
 								width: 'auto',
-								height: '300px',
-								lhs: function(setValue) {
-									setValue(originalcode);
-								},
-								rhs: function(setValue) {
-									setValue(remediatedcode);
-								}
+								height: '300px'
 							});	
-					if($scope.mergelyMap[mergelyID]=== undefined){
-                        $scope.mergelyMap[mergelyID]=true;
-                    } else {
-                        $scope.mergelyMap[mergelyID] ? document.getElementById(mergelyID).style.display = "none" : document.getElementById(mergelyID).style.display = "block";
-                        $scope.mergelyMap[mergelyID] = !$scope.mergelyMap[mergelyID];
-                    }							
 				}
-												
-				
+
+				function GetItem(id){
+					var files = jsonData.project.supported[_issueName].files;
+					for(var fIndex = 0; fIndex < files.length; fIndex++){
+						var items = files[fIndex].items;
+						for(var iIndex = 0; iIndex < items.length; iIndex++){
+							if(items[iIndex].id == id){
+								return items[iIndex];
+							}
+						}
+					}
+					return null;
+				}
+
+				var textAreaWhitelist = [];
 				$scope.$watch('$viewContentLoaded', 
 						function() { 
 							$timeout(function() {
-								textAreaFunc();
+								textAreaFunc(textAreaWhitelist);
+								var remedCollapseBodyCollection = document.querySelectorAll('[id^="remedAccSubCollapse"]');
+								Array.prototype.forEach.call(remedCollapseBodyCollection, collapseCallback);
 							},0);    
 				});
-				
+
+				function collapseCallback(element, iterator){
+					var idx = element.getAttribute("data-index");
+					var mergelyBodyContainer = document.getElementById("mergelyBodyContainer" + idx);
+
+					$('#' + element.getAttribute("id")).on('shown.bs.collapse', function() {
+						$('#' + mergelyBodyContainer.id).show();
+						
+						$('#mergely'+idx).mergely("lhs", GetItem(idx).originalCode.join('\n'));
+						$('#mergely'+idx).mergely("rhs", GetItem(idx).remediatedCode.join('\n'));
+						$('#mergely'+idx).mergely('update');
+						$('#mergely'+idx).mergely('resize');
+					});
+
+					$('#' + element.getAttribute("id")).on('hidden.bs.collapse', function() {
+						mergelyBodyContainer.style.display == "none" ? $('#' + mergelyBodyContainer.id).show() : $('#' + mergelyBodyContainer.id).hide();
+						$('#' + mergelyBodyContainer.id).hide();
+						$('#mergely'+idx).mergely('resize');
+					});
+				}
 		});
-		
-		function isArray(what) {
-			return Object.prototype.toString.call(what) === '[object Array]';
-		}
 
-		var textAreaWhitelist = ["message"]
-	
-		function scrub(sourceText, valueToScrub){
-			newTextValue = "";
-			
-			if(sourceText.length > 0){
-				scrubIndex = sourceText.indexOf(valueToScrub);
-				
-				newTextValue = sourceText.substr(0, scrubIndex);
-				newTextValue = newTextValue + sourceText.substr(scrubIndex + valueToScrub.length);
-			}
-			return newTextValue
-		}
-				
-		function textAreaFunc(){
-			var textAreas = Array.prototype.slice.call(document.getElementsByTagName("textarea"));
-			
-			if(textAreas != null){
-				textAreas.forEach(function(item){
-					
-					if(!textAreaWhitelist.includes(item.getAttribute("id"))){
-					
-						highlightObjects = [];
-						tempValue = item.value.replace(/&quot;/g, '\"');
-						item.innerHtml = "";
-						item.value = tempValue;
-
-						var emTags = [{s:"<em class=\"red\">",r:"red"}, {s:"<em class=\"blue\">",r:"blue"}, {s:"<em class=\"bold\">",r:"bold"}];
-						
-						//temporary fix replacing <em class="red"> tags
-						newTextValue = item.value;
-						
-						emTags.forEach(function(itemTag){
-							// search for em tags
-							index = newTextValue.indexOf(itemTag.s)-1;
-							while(index > 0){
-								startIndex = index;
-								endIndex = newTextValue.indexOf("</em>", startIndex);
-								
-								lastCrStart = newTextValue.lastIndexOf("\n", startIndex);
-								lineNumStart = newTextValue.substr(0, startIndex).split("\n").length-1;
-								startIndex = index - lastCrStart;
-								//startIndex -= itemTag.s.length;
-								
-								lastCrEnd = newTextValue.lastIndexOf("\n", endIndex);
-								lineNumEnd = newTextValue.substr(0, endIndex).split("\n").length-1;
-								endIndex = (endIndex - itemTag.s.length) - lastCrEnd;
-								
-								newTextValue = scrub(newTextValue, itemTag.s);
-								newTextValue = scrub(newTextValue, "</em>");
-								index = newTextValue.indexOf(itemTag.s);
-								
-								cName = ""
-								switch(itemTag.r){
-									case "red":
-										cName = "vuln-highlight"; break;
-									case "blue":
-										cName = "nonvuln-highlight"; break;
-									case "bold":
-										cName = "bold"; break;
-									default: cName = ""; break;
-								}
-								
-								var styleObj = {
-									from:{line: lineNumStart, ch: startIndex}, 
-									to:{line: lineNumEnd, ch: endIndex}, 
-									obj:{className: cName}
-								}
-								
-								highlightObjects.push(styleObj);
-							}
-						});
-						
-						item.value = newTextValue
-					
-						var editor = CodeMirror.fromTextArea(item, {
-								mode: "javascript", 
-								autoRefresh: true,
-								readOnly: true,
-								lineNumbers: true
-							});
-						
-						editor.setSize(null,"100%");
-						
-						highlightObjects.forEach(function(itemStyle){
-							editor.markText(itemStyle.from, itemStyle.to, itemStyle.obj)
-						});
-						
-						editor.save();
-						editor.refresh();
-					}
-				});
-			}
-		}		
 	</script>  
 </html>
