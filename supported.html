@@ -46,7 +46,7 @@
 					</li>				
 				  </ul>
 				  
-				  <div class="tab-content" id="myTabContent"  style="margin:20px">
+				<div class="tab-content" id="myTabContent"  style="margin:20px">
 					<div class="tab-pane fade active show" id="faq" role="tabpanel" aria-labelledby="faq-tab">
 						<div ng-repeat="faq in faqs">
 							<div class="post-main-info">
@@ -60,148 +60,145 @@
 							No data available
 							</p>
 						</div>
-					</div>				  
+					</div>	
+
 					<div class="tab-pane fade" id="remediation" role="tabpanel" aria-labelledby="remediation-tab">
+						<!-- remediation accordion start -->
+						<div class="accordion md-accordion" id="remedAccMain" role="tablist" aria-multiselectable="true" >
+							<!-- remediation section -->
 
-					<!-- remediation accordion start -->
-					<div class="accordion md-accordion" id="remedAccMain" role="tablist" aria-multiselectable="true" >
-						<!-- remediation section -->
+							<div><h4>Instances</h4></div>
+							<div>&nbsp;</div>
+							<!-- Accordion card -->
+							<li ng-repeat="f in files" style="border-bottom: 1px solid #ddd;list-style-type:none;">
+								<div class="card">
+								<!-- Card header -->
+									<div class="card-header" role="tab" id="remedAccMain{{$index}}">
+										<a data-toggle="collapse" data-parent="#remedAccMain" href="#remedAccMainCollapse{{$index}}" aria-expanded="true"
+											aria-controls="remedAccMainCollapse{{$index}}">
+											<h6 class="mb-0">
+											File: {{f.file}}
+											</h6>
+										</a>
+									</div>
 
-						<div><h4>Instances</h4></div>
-						<div>&nbsp;</div>
-						<!-- Accordion card -->
-						<li ng-repeat="f in files" style="border-bottom: 1px solid #ddd;list-style-type:none;">
-						  <div class="card">
-							<!-- Card header -->
-							<div class="card-header" role="tab" id="remedAccMain{{$index}}">
-								  <a data-toggle="collapse" data-parent="#remedAccMain" href="#remedAccMainCollapse{{$index}}" aria-expanded="true"
-									aria-controls="remedAccMainCollapse{{$index}}">
-									<h6 class="mb-0">
-									  File: {{f.file}}
-									</h6>
-								  </a>
-							</div>
-
-							<!-- Card body -->
-							<div id="remedAccMainCollapse{{$index}}" class="collapse" role="tabpanel" aria-labelledby="remedAccMain{{$index}}"
-								  data-parent="#remedAccMain">
-								<div class="card-body">
-								<!-- Remediation Details -->
-									<div class="accordion md-accordion" id="remedAccSub" role="tablist" aria-multiselectable="true" >
-										<div class="card" ng-repeat="dr in f.items">
-											<div class="card-header" role="tab" id="remedAccSub{{dr.id}}">
-												<a data-toggle="collapse" data-parent="#remedAccSub" href="#remedAccSubCollapse{{dr.id}}" aria-expanded="true"
-												aria-controls="remedAccSubCollapse{{dr.id}}"
-												ng-click="codeDiffMerge((dr.id),(dr.originalCode),(dr.remediatedCode))">
-												<h6 class="mb-0">
-													[{{$index+1}}] Issue ID: {{dr.id}}
-												</h6>
-												</a>
-										</div>
-				
-										<div id="remedAccSubCollapse{{dr.id}}" class="collapse" role="tabpanel" aria-labelledby="remedAccSub{{dr.id}}"
-												data-parent="#remedAccSub" data-index="{{dr.id}}">
-													<div class="card-body" style="height:350px;">
-														<div id="mergelyBodyContainer{{dr.id}}" style="display: none;">
-															<div id="mergely{{dr.id}}">
+									<!-- Card body -->
+									<div id="remedAccMainCollapse{{$index}}" class="collapse" role="tabpanel" aria-labelledby="remedAccMain{{$index}}"
+										data-parent="#remedAccMain">
+										<div class="card-body">
+										<!-- Remediation Details -->
+											<div class="accordion md-accordion" id="remedAccSub" role="tablist" aria-multiselectable="true" >
+												<div class="card" ng-repeat="dr in f.items">
+													<div class="card-header" role="tab" id="remedAccSub{{dr.id}}">
+														<a data-toggle="collapse" data-parent="#remedAccSub" href="#remedAccSubCollapse{{dr.id}}" aria-expanded="true"
+														aria-controls="remedAccSubCollapse{{dr.id}}"
+														ng-click="codeDiffMerge((dr.id),(dr.originalCode),(dr.remediatedCode))">
+														<h6 class="mb-0">
+															[{{$index+1}}] Issue ID: {{dr.id}}
+														</h6>
+														</a>
+													</div>
+						
+													<div id="remedAccSubCollapse{{dr.id}}" class="collapse" role="tabpanel" aria-labelledby="remedAccSub{{dr.id}}"
+														data-parent="#remedAccSub" data-index="{{dr.id}}">
+														<div class="card-body" style="height:350px;">
+															<div id="mergelyBodyContainer{{dr.id}}" style="display: none;">
+																<div id="mergely{{dr.id}}">
+																</div>
 															</div>
 														</div>
 													</div>
+													
 												</div>
 											</div>
+										</div>
+										<!--Remediation Details -->
+									</div>
+								</div>
+							</li>
+							<!-- Accordion card -->						  						  
+						</div>
+					<!-- remediation accordion end -->
+					</div>
 				
+					<!-- mitigation details start -->
+					<div class="tab-pane fade" id="mitigation" role="tabpanel" aria-labelledby="mitigation-tab">
+				
+						<!-- mitigationn accordion start -->
+						<div class="accordion md-accordion" id="mitigAccMain" role="tablist" aria-multiselectable="true" >
+							<!-- mitigation section -->
+							
+								<!-- Accordion card -->
+								<li ng-repeat="mitigation in mitigations" style="border-bottom: 1px solid #ddd;list-style-type:none;">
+									<div class="card">
+
+										<!-- Card header -->
+										<div class="card-header" role="tab" id="mitigAccMain{{$index}}">
+											<a data-toggle="collapse" data-parent="#mitigAccMain" href="#mitigAccMainCollapse{{$index}}" ng-click="textAreaFunc()" aria-expanded="true"
+											aria-controls="mitigAccMainCollapse{{$index}}">
+											<h6 class="mb-0">
+												[{{$index+1}}] Mitigation - Web Server / IIS
+											</h6>
+											</a>
+										</div>
+
+										<!-- Card body -->
+										<div id="mitigAccMainCollapse{{$index}}" class="collapse" role="tabpanel" aria-labelledby="mitigAccMain{{$index}}"
+											data-parent="#mitigAccMain">
+											<div class="card-body">
+												<!-- Mitigation Details -->
+												<div><h4>System</h4></div>
+												<div class="post-main-info">
+													<div>
+														<p id="mitigAccMainsystem{{$index}}">{{mitigation.system}}										
+														</p>
+													</div>
+												</div>
+												<div>&nbsp;</div>
+												<div><h4>Configuration</h4></div>
+												<div class="post-main-info">
+													<div>
+														<p id="mitigAccMainconfiguration{{$index}}">{{mitigation.configuration}}										
+														</p>
+													</div>
+												</div>
+												<div>&nbsp;</div>
+												<div><h4>Comments</h4></div>
+												<div class="post-main-info">
+													<div>
+													<p id="mitigAccMaincomments{{$index}}">
+													{{mitigation.comments}}
+													</P>
+													</div>
+												</div>
+												<div>&nbsp;</div>
+												<div class="row">
+													<div class="col-md-6 vuln">
+														<label for="vuln">Backend</label>
+														<textarea id="mitigAccMainvulncode{{$index}}">
+														{{mitigation.backend}}
+														</textarea>	
+													</div>
+													<div class="col-md-6 nonvuln">
+														<label for="nonvuln">Frontend</label>
+														<textarea id="mitigAccMainnonvulncode{{$index}}">
+														{{mitigation.frontend}}
+														</textarea>
+													</div>
+												</div>
+										<!-- Mitigation Details -->
+											</div>
 										</div>
 									</div>
-								 <!--Remediation Details -->
-									</div>
-								</div>
-							</div>
-						  </div>
-						</li>
-						  <!-- Accordion card -->						  						  
+								</li>
+								<!-- Accordion card -->						
+						</div>
 					</div>
-					<!-- remediation accordion end -->
-				</div>
-				
-			     	<!-- mitigation details start -->
-                     <div class="tab-pane fade" id="mitigation" role="tabpanel" aria-labelledby="mitigation-tab">
-				
-					<!-- mitigationn accordion start -->
-					<div class="accordion md-accordion" id="mitigAccMain" role="tablist" aria-multiselectable="true" >
-						<!-- mitigation section -->
-						
-						  <!-- Accordion card -->
-						  <li ng-repeat="mitigation in mitigations" style="border-bottom: 1px solid #ddd;list-style-type:none;">
-						  <div class="card">
-
-							<!-- Card header -->
-							<div class="card-header" role="tab" id="mitigAccMain{{$index}}">
-							  <a data-toggle="collapse" data-parent="#mitigAccMain" href="#mitigAccMainCollapse{{$index}}" ng-click="textAreaFunc()" aria-expanded="true"
-								aria-controls="mitigAccMainCollapse{{$index}}">
-								<h6 class="mb-0">
-								  [{{$index+1}}] Mitigation - Web Server / IIS
-								</h6>
-							  </a>
-							</div>
-
-							<!-- Card body -->
-							<div id="mitigAccMainCollapse{{$index}}" class="collapse" role="tabpanel" aria-labelledby="mitigAccMain{{$index}}"
-							  data-parent="#mitigAccMain">
-							  <div class="card-body">
-							  <!-- Mitigation Details -->
-								<div><h4>System</h4></div>
-								<div class="post-main-info">
-									<div>
-										<p id="mitigAccMainsystem{{$index}}">{{mitigation.system}}										
-										</p>
-									</div>
-								</div>
-								<div>&nbsp;</div>
-								<div><h4>Configuration</h4></div>
-								<div class="post-main-info">
-									<div>
-										<p id="mitigAccMainconfiguration{{$index}}">{{mitigation.configuration}}										
-										</p>
-									</div>
-								</div>
-								<div>&nbsp;</div>
-								<div><h4>Comments</h4></div>
-								<div class="post-main-info">
-									<div>
-									<p id="mitigAccMaincomments{{$index}}">
-									{{mitigation.comments}}
-									</P>
-									</div>
-								</div>
-								<div>&nbsp;</div>
-								<div class="row">
-									<div class="col-md-6 vuln">
-										<label for="vuln">Backend</label>
-										<textarea id="mitigAccMainvulncode{{$index}}">
-										{{mitigation.backend}}
-										</textarea>	
-									</div>
-									<div class="col-md-6 nonvuln">
-										<label for="nonvuln">Frontend</label>
-										<textarea id="mitigAccMainnonvulncode{{$index}}">
-										{{mitigation.frontend}}
-										</textarea>
-									</div>
-								</div>
-							<!-- Mitigation Details -->
-							  </div>
-							</div>
-						  </div>
-						  </li>
-						  <!-- Accordion card -->						
-					  
-					</div>
-				</div>
-					<!-- mitigationn accordion end -->
-				</div>
+				<!-- mitigationn accordion end -->
 			</div>
 		</div>
 	</div>
+</div>
 	
 	<link rel="stylesheet" type="text/css" href="css/mergely.css" />	
 
