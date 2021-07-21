@@ -27,7 +27,12 @@
 	</head>
 	
 	<body ng-app="myapp" ng-controller="ReportObject">
-		<div class="container">
+		<div class="container" ng-if=!isdataloaded>
+			<h1 style="text-align: center;">
+				No data available
+			</h1>
+		</div>
+		<div class="container" ng-if=isdataloaded>
 			<header class="clearfix">
 				
 				<h1 ng-bind="data.project.name" style="text-align: center;"></h1>
@@ -90,7 +95,12 @@
 	</body>
 	<script>
 		var app = angular.module("myapp", []);
-			app.controller("ReportObject", function($timeout, $scope) {				
+			app.controller("ReportObject", function($timeout, $scope) {
+				//var jsonData = true;
+				$scope.isdataloaded=true;
+				if (typeof window.jsonData == 'undefined') {
+					$scope.isdataloaded=false;
+				} else {
 				$scope.data = jsonData;	
 				$scope.openTab = openTab;
 				$scope.issueCounts = {
@@ -119,6 +129,7 @@
 					  evt.currentTarget.className += " active";
 					  //codeDiffMerge();
 				}	
+				}
 		});
 	</script>
 </html>
