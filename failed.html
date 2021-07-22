@@ -232,8 +232,12 @@
 									<!-- Card body -->
 									<div id="issueListAccMainCollapse{{$index}}" class="collapse" role="tabpanel" aria-labelledby="issueListAccMain{{$index}}" data-parent="#issueListAccMain{{$index}}">
 										<div class="card-body">
+											<div class="status-header">
+												<img src="images/exclamation-mark-emoji.png" width="30" height="30"/>
+													auto-remediation algorithm not found
+											</div>
 										<!-- Issue list Details -->
-											<div class="accordion md-accordion" id="issueListAccSub{{itm.id}}" role="tablist" aria-multiselectable="true" >
+											<div class="accordion md-accordion" id="issueListAccSub{{itm.id}}" role="tablist" aria-multiselectable="true" style="margin-top: 20px;>
 												<!-- Issue list section -->
 												
 												<!-- Accordion card -->
@@ -244,6 +248,7 @@
 															aria-controls="issueListAccSubCollapse{{itm.id}}_{{$index}}">
 															<h6 class="mb-0">
 																ID: {{itm.id}}&nbsp;&nbsp;&nbsp;&nbsp;Line: {{itm.line}}
+																<img src="images/magnifyingGlassExclamation.png" width="30" height="30" style="float: right; margin: -5px -15px 0px 0px;"/>
 															</h6>
 														</a>
 														</div>
