@@ -30,6 +30,10 @@ html {
       background-color:#32CD32;
       color:white
   }
+	.log-highlight{
+      background-color:#2B2B2B;
+      color:#92D050
+  }
   
   .red {
       font-weight: bold;
@@ -75,7 +79,8 @@ html {
     margin-bottom: 20px;}
     
   .vuln label,
-  .nonvuln label, h4 {
+  .nonvuln label,
+  .log label, h4 {
       display: block;
       margin-bottom: 8px;
       font-size: 18px;

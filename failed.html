@@ -37,21 +37,24 @@
 				
 				  <ul class="nav nav-tabs" id="myTab" role="tablist">
 					<li class="nav-item waves-effect waves-light">
-					  <a class="nav-link active" id="faq-tab" data-toggle="tab" href="#faq" role="tab" aria-controls="faq" aria-selected="false">FAQ</a>
+					  <a class="nav-link active" id="issuelist-tab" data-toggle="tab" href="#issueList" role="tab" aria-controls="issueList" aria-selected="false">Issue list</a>
+					</li>
+					<li class="nav-item waves-effect waves-light">
+					  <a class="nav-link" id="faq-tab" data-toggle="tab" href="#faq" role="tab" aria-controls="faq" aria-selected="false">FAQ</a>
 					</li>				  
 					<li class="nav-item waves-effect waves-light"> 
 					  <a class="nav-link" id="remediation-tab" data-toggle="tab" href="#remediation" role="tab" aria-controls="remediation" aria-selected="false">Remediation</a>
 					</li>
 					<li class="nav-item waves-effect waves-light">
 					  <a class="nav-link" id="mitigation-tab" data-toggle="tab" href="#mitigation" role="tab" aria-controls="mitigation" aria-selected="true">Mitigation</a>
-					</li>		
+					</li>	
 					<li class="nav-item waves-effect waves-light">
-					  <a class="nav-link" id="issuelist-tab" data-toggle="tab" href="#issueList" role="tab" aria-controls="issueList" aria-selected="true">Issue list</a>
-					</li>					
+					  <a class="nav-link" id="buildlogs-tab" data-toggle="tab" href="#buildlogs" role="tab" aria-controls="buildlogs" aria-selected="true">Build Logs</a>
+					</li>						
 				  </ul>
 				  
 				  <div class="tab-content" id="myTabContent"  style="margin:20px">
-					<div class="tab-pane fade active show" id="faq" role="tabpanel" aria-labelledby="faq-tab">
+					<div class="tab-pane fade" id="faq" role="tabpanel" aria-labelledby="faq-tab">
 						<div ng-repeat="faq in faqs">
 							<div class="post-main-info">
 								<p class="parent-p" style="border-bottom: 1px solid #ddd;"><strong>{{htmlDecode(faq.question)}}</strong></p>
@@ -209,7 +212,7 @@
 				</div>
 				
 					<!-- Issue list accordion start -->
-					<div class="tab-pane fade" id="issueList" role="tabpanel" aria-labelledby="issueList-tab">			
+					<div class="tab-pane fade active show" id="issueList" role="tabpanel" aria-labelledby="issueList-tab">			
 						<div>			
 							<h3>List of all issues of {{issueName}}</h3>
 	
@@ -271,7 +274,16 @@
 							</div>
 						</div>	
 					</div>
-					
+					<!-- Build log tab starts -->	
+					<div class="tab-pane fade" id="buildlogs" role="tabpanel" aria-labelledby="buildlogs-tab">
+						<div class="col-md-12 log" style="width: 100%;">
+							<label for="log">Build Logs</label>
+								<textarea id="buildlogtxt" rows="20" cols="50" style="background-color:#2B2B2B;color:#92D050;">
+										Log details for the failed build
+								</textarea>
+						</div>
+					</div>
+					<!-- Build log tab ends -->
 				</div>
 			</div>
 		</div>
