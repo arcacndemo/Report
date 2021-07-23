@@ -241,17 +241,17 @@
 	
 									<!-- Card body -->
 									<div id="issueListAccMainCollapse{{$index}}" class="collapse" role="tabpanel" aria-labelledby="issueListAccMain{{$index}}" data-parent="#issueListAccMain{{$index}}">
-										<div class="card-body">
+										<div class="card-body" ng-repeat = "itm in i.items">
 											<div class="status-header">
 												<img src="images/exclamation-mark-emoji.png" width="30" height="30"/>
-													auto-remediation algorithm not found
+													{{itm.errorMessage}}
 											</div>
 										<!-- Issue list Details -->
 											<div class="accordion md-accordion" id="issueListAccSub{{itm.id}}" role="tablist" aria-multiselectable="true" style="margin-top: 20px;">
 												<!-- Issue list section -->
 												
 												<!-- Accordion card -->
-												<div class="card" ng-repeat = "itm in i.items">
+												<div class="card">
 													<!-- Card header -->
 													<div class="card-header" role="tab" id="issueListAccSub{{itm.id}}">
 														<a data-toggle="collapse" data-parent="#issueListAccSub{{itm.id}}" href="#issueListAccSubCollapse{{itm.id}}_{{$index}}" aria-expanded="true"
