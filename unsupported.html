@@ -108,6 +108,10 @@
 									</div>
 								</div>
 								<div>&nbsp;</div>
+								<div class="status-header">
+								<img src="images/exclamation-mark-emoji.png" width="30" height="30"/>
+													
+								</div>
 								<div class="row">
 									<div class="col-md-6 vuln">
 										<label for="vuln">Vulnerable code</label>
@@ -238,7 +242,7 @@
 									<div class="card-body">
 										<div class="status-header">
 											<img src="images/exclamation-mark-emoji.png" width="30" height="30"/>
-										auto-remediation algorithm not found
+										Auto-remediation failed. Remediation strategy not available at this time.
 										</div>
 									<!-- Issue list Details -->
 										<div class="accordion md-accordion" id="issueListAccSub{{iIndex}}" role="tablist" aria-multiselectable="true" style="margin-top: 20px;">
@@ -253,7 +257,7 @@
 														<h6 class="mb-0">
 															ID: {{itm.id}}<br />
 															Line: {{itm.line}}
-															<img src="images/magnifyingGlassExclamation.png" width="30" height="30" style="float: right; margin: -20px -15px 0px 0px;"/>
+															
 														</h6>
 													</a>
 													</div>
@@ -263,6 +267,9 @@
 													<!-- Issue list Details -->
 														<div class="col-md-12 nonvuln" style="width: 100%;">
 															<label for="vuln">Snippet</label>
+															<div>
+																<img class="iconexclamation" src="images/magnifyingGlass.png"/>
+															</div>
 															<textarea id="issueListAccSubvulncode{{itm.id}}_{{$index}}">
 {{htmlDecode(itm.snippet)}}
 															</textarea>
