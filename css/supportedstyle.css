@@ -153,3 +153,20 @@ html {
       color:#AAAAAA;
       display:block;
   }
+
+.status-header {
+  padding: 0rem 0rem;
+  margin-bottom: 0;
+  background-color: #E2F0D9;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+  outline: thick solid #A9D18E;
+}
+
+.iconexclamation{
+   width: 30px;
+   height: 30px;
+   border: none;
+   display:inline-block;
+   float: right;
+   margin: -35px 0px 0px 0px;
+}
