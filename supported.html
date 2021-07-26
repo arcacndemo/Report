@@ -19,7 +19,11 @@
 	<script src="js/autorefresh.js"></script>
 	<script src="js/angular.min.js"></script>		
 	<link rel="stylesheet" type="text/css" href="css/supportedstyle.css" />
-	
+	<style>
+		.bs-example{
+			margin: 20px;
+		}
+	</style>
   </head>
   <body ng-app="myapp" ng-controller="SupportedObject">
   
@@ -71,6 +75,7 @@
 							<div>&nbsp;</div>
 							<!-- Accordion card -->
 							<li ng-repeat="f in files" style="border-bottom: 1px solid #ddd;list-style-type:none;">
+
 								<div class="card">
 								<!-- Card header -->
 									<div class="card-header" role="tab" id="remedAccMain{{$index}}">
@@ -97,13 +102,42 @@
 															[{{$index+1}}] Issue ID: {{dr.id}}
 														</h6>
 														</a>
+
 													</div>
 						
 													<div id="remedAccSubCollapse{{dr.id}}" class="collapse" role="tabpanel" aria-labelledby="remedAccSub{{dr.id}}"
 														data-parent="#remedAccSub" data-index="{{dr.id}}">
+										<div class="bs-example">
+											<!-- Button HTML (to Trigger Modal) -->
+											<button type="button" class="btn btn-sm btn-primary">Show Modal</button>
+										 
+											<!-- Modal HTML -->
+											<div id="myModal" class="modal fade" tabindex="-1">
+												    <div class="modal-dialog-full-width modal-dialog momodel modal-fluid" role="document">
+														<div class="modal-content-full-width modal-content ">
+															<div class=" modal-header-full-width   modal-header text-center">
+																<h5 class="modal-title w-100" id="exampleModalPreviewLabel">Vulnerable and Remediate Code</h5>
+																<button type="button" class="close " data-dismiss="modal" aria-label="Close">
+																	<span style="font-size: 1.3em;" aria-hidden="true">&times;</span>
+																</button>
+															</div>
+															<div class="modal-body" style="height:1100px;">
+																<div id="mergelyModalContainer{{dr.id}}" style="display: block;">
+																<div id="mergelymodal{{dr.id}}">
+																</div>
+																</div>					
+																
+															</div>
+															<div class="modal-footer-full-width  modal-footer">
+																<button type="button" class="btn btn-danger btn-md btn-rounded" data-dismiss="modal">Close</button>
+															</div>
+														</div>
+													</div>
+											</div>
+										</div>
 														<div class="card-body" style="height:350px;">
 															<div id="mergelyBodyContainer{{dr.id}}" style="display: none;">
-																<div id="mergely{{dr.id}}">
+																<div id="mergelybody{{dr.id}}">
 																</div>
 															</div>
 														</div>
@@ -213,8 +247,11 @@
 
   </body>
 	<script>
-		
-			
+ $(document).ready(function(){
+        $(".btn").click(function(){
+            $("#myModal").modal('show');
+        });
+    });
 
 		var app = angular.module("myapp", []);
 			app.controller("SupportedObject", function($timeout, $scope) {	
@@ -268,8 +305,8 @@
 					var i, mergelycontent, mergelyfullscreen,mergelyID;
 					originalcode = originalcode.join('\n');
 					remediatedcode = remediatedcode.join('\n');
-					mergelyID = "mergely"+(index);
-							$('#mergely'+index).mergely({
+					//mergelyID = "mergely"+(index);
+							$('#mergelybody'+index).mergely({
 								license: 'lgpl',
 								cmsettings: {
 									readOnly: true
@@ -277,6 +314,14 @@
 								width: 'auto',
 								height: '300px'
 							});	
+							$('#mergelymodal'+index).mergely({
+								license: 'lgpl',
+								cmsettings: {
+									readOnly: true
+								},
+								width: 'auto',
+								height: '900px'
+							});
 				}
 
 				function GetItem(id){
@@ -299,6 +344,7 @@
 								textAreaFunc(textAreaWhitelist);
 								var remedCollapseBodyCollection = document.querySelectorAll('[id^="remedAccSubCollapse"]');
 								Array.prototype.forEach.call(remedCollapseBodyCollection, collapseCallback);
+								Array.prototype.forEach.call(remedCollapseBodyCollection, modalCallback);
 							},0);    
 				});
 
@@ -309,16 +355,30 @@
 					$('#' + element.getAttribute("id")).on('shown.bs.collapse', function() {
 						$('#' + mergelyBodyContainer.id).show();
 						
-						$('#mergely'+idx).mergely("lhs", GetItem(idx).originalCode.join('\n'));
-						$('#mergely'+idx).mergely("rhs", GetItem(idx).remediatedCode.join('\n'));
-						$('#mergely'+idx).mergely('update');
-						$('#mergely'+idx).mergely('resize');
+						$('#mergelybody'+idx).mergely("lhs", GetItem(idx).originalCode.join('\n'));
+						$('#mergelybody'+idx).mergely("rhs", GetItem(idx).remediatedCode.join('\n'));
+						$('#mergelybody'+idx).mergely('update');
+						$('#mergelybody'+idx).mergely('resize');
 					});
 
 					$('#' + element.getAttribute("id")).on('hidden.bs.collapse', function() {
 						mergelyBodyContainer.style.display == "none" ? $('#' + mergelyBodyContainer.id).show() : $('#' + mergelyBodyContainer.id).hide();
 						$('#' + mergelyBodyContainer.id).hide();
-						$('#mergely'+idx).mergely('resize');
+						$('#mergelybody'+idx).mergely('resize');
+					});
+				}
+
+				function modalCallback(element, iterator){
+					var idx = element.getAttribute("data-index");
+					var mergelyModalContainer = document.getElementById("mergelyModalContainer" + idx);
+
+					$('#' + element.getAttribute("id")).on('shown.bs.modal', function() {
+						$('#' + mergelyModalContainer.id).show();
+						
+						$('#mergelymodal'+idx).mergely("lhs", GetItem(idx).originalCode.join('\n'));
+						$('#mergelymodal'+idx).mergely("rhs", GetItem(idx).remediatedCode.join('\n'));
+						$('#mergelymodal'+idx).mergely('update');
+						$('#mergelymodal'+idx).mergely('resize');
 					});
 				}
 		});
