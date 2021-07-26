@@ -108,9 +108,7 @@
 													<div id="remedAccSubCollapse{{dr.id}}" class="collapse" role="tabpanel" aria-labelledby="remedAccSub{{dr.id}}"
 														data-parent="#remedAccSub" data-index="{{dr.id}}">
 										<div class="bs-example">
-											<!-- Button HTML (to Trigger Modal) -->
-											<button type="button" class="btn btn-sm btn-primary">Show Modal</button>
-										 
+											<!-- Button HTML (to Trigger Modal) -->											
 											<!-- Modal HTML -->
 											<div id="myModal" class="modal fade" tabindex="-1">
 												    <div class="modal-dialog-full-width modal-dialog momodel modal-fluid" role="document">
@@ -136,7 +134,8 @@
 											</div>
 										</div>
 														<div class="card-body" style="height:350px;">
-														<img class="iconexclamation" src="images/magnifyingGlass.png"/>
+										 <div class="iconexclamation"><button type="button" class="btn btn-default btn-sm"><i class="bi bi-arrows-angle-expand"></i></button></div>
+	
 															<div id="mergelyBodyContainer{{dr.id}}" style="display: none;">
 																<div id="mergelybody{{dr.id}}">
 																</div>
@@ -321,6 +320,7 @@
 									readOnly: true
 								},
 								width: 'auto',
+								editor_height: '900px',
 								height: '900px'
 							});
 				}
