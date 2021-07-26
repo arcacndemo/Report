@@ -110,6 +110,23 @@
 						
 													<div id="remedAccSubCollapse{{dr.id}}" class="collapse" role="tabpanel" aria-labelledby="remedAccSub{{dr.id}}"
 														data-parent="#remedAccSub" data-index="{{dr.id}}">
+ <div class="iconexclamation"><button type="button" class="btn btn-default btn-sm"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrows-angle-expand" viewBox="0 0 16 16">
+  <path fill-rule="evenodd" d="M5.828 10.172a.5.5 0 0 0-.707 0l-4.096 4.096V11.5a.5.5 0 0 0-1 0v3.975a.5.5 0 0 0 .5.5H4.5a.5.5 0 0 0 0-1H1.732l4.096-4.096a.5.5 0 0 0 0-.707zm4.344-4.344a.5.5 0 0 0 .707 0l4.096-4.096V4.5a.5.5 0 1 0 1 0V.525a.5.5 0 0 0-.5-.5H11.5a.5.5 0 0 0 0 1h2.768l-4.096 4.096a.5.5 0 0 0 0 .707z"/>
+</svg></button></div>
+
+														<div class="card-body" style="height:350px;">
+										
+															<div id="mergelyBodyContainer{{dr.id}}" style="display: none;">
+																<div class="container">
+																	<div class="row">
+																		<div class="col" style="padding: 0"><label for="vuln">Vulnerable Snippet</label></div>
+																		<div class="col" style="padding-left: 40px"><label for="vuln">Non-vulnerable Snippet</label></div>
+																	</div>
+																</div>
+																<div id="mergelybody{{dr.id}}">
+																</div>
+															</div>
+														</div>
 										<div class="bs-example">
 											<!-- Button HTML (to Trigger Modal) -->											
 											<!-- Modal HTML -->
@@ -124,10 +141,10 @@
 															</div>
 															<div class="modal-body" style="height:800px;">
 																<div id="mergelyModalContainer{{dr.id}}" style="display: block; height: 95%;">
-																	<div class="container">
-																		<div class="row">
+																	<div class="container"  style="width: 1200px;float: left;">
+																		<div class="row"  style="width: 1200px;">
 																			<div class="col" style="padding: 0"><label for="vuln">Vulnerable Snippet</label></div>
-																			<div class="col" style="padding-left: 40px"><label for="vuln">Non-vulnerable Snippet</label></div>
+																			<div class="col" style="padding-left: 50px"><label for="vuln">Non-vulnerable Snippet</label></div>
 																		</div>
 																	</div>	
 																	<div id="mergelymodal{{dr.id}}" style="height: 100%">
@@ -142,19 +159,6 @@
 													</div>
 											</div>
 										</div>
-														<div class="card-body" style="height:350px;">
-										 <div class="iconexclamation"><button type="button" class="btn btn-default btn-sm"><i class="bi bi-arrows-angle-expand"></i></button></div>
-															<div id="mergelyBodyContainer{{dr.id}}" style="display: none;">
-																<div class="container">
-																	<div class="row">
-																		<div class="col" style="padding: 0"><label for="vuln">Vulnerable Snippet</label></div>
-																		<div class="col" style="padding-left: 40px"><label for="vuln">Non-vulnerable Snippet</label></div>
-																	</div>
-																</div>
-																<div id="mergelybody{{dr.id}}">
-																</div>
-															</div>
-														</div>
 													</div>
 													
 												</div>

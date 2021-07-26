@@ -113,10 +113,9 @@
 											</div>
 										</div>
 										<div>&nbsp;</div>
-										<div class="status-header">
+											<div class="status-header">
 												<img src="images/exclamation-mark-emoji.png" width="30" height="30"/>
-													
-												</div>
+											</div>
 										<div>&nbsp;</div>
 										<div class="row">
 											<div class="col-md-6 vuln">
@@ -242,10 +241,7 @@
 									<!-- Card body -->
 									<div id="issueListAccMainCollapse{{$index}}" class="collapse" role="tabpanel" aria-labelledby="issueListAccMain{{$index}}" data-parent="#issueListAccMain{{$index}}">
 										<div class="card-body" ng-repeat = "itm in i.items">
-											<div class="status-header">
-												<img src="images/exclamation-mark-emoji.png" width="30" height="30"/>
-													{{itm.errorMessage}}
-											</div>
+											
 										<!-- Issue list Details -->
 											<div class="accordion md-accordion" id="issueListAccSub{{itm.id}}" role="tablist" aria-multiselectable="true" style="margin-top: 20px;">
 												<!-- Issue list section -->
@@ -264,6 +260,10 @@
 														</div>
 													<!-- Card body -->
 													<div id="issueListAccSubCollapse{{itm.id}}_{{$index}}" class="collapse" role="tabpanel" aria-labelledby="issueListAccSub{{itm.id}}_{{$index}}" data-parent="#issueListAccSub{{itm.id}}">
+											<div class="status-header" style="width:1108px">
+												<img src="images/exclamation-mark-emoji.png" width="30" height="30"/>
+													{{itm.errorMessage}}
+											</div>
 														<div class="card-body">
 														<!-- Issue list Details -->
 															<div class="col-md-12 nonvuln" style="width: 100%;">

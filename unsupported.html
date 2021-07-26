@@ -110,7 +110,7 @@
 								<div>&nbsp;</div>
 								<div class="status-header">
 								<img src="images/exclamation-mark-emoji.png" width="30" height="30"/>
-													
+										Below is reference code for possible remediation options
 								</div>
 								<div>&nbsp;</div>
 								<div class="row">
@@ -241,12 +241,8 @@
 								<!-- Card body -->
 								<div id="issueListAccMainCollapse{{iIndex}}" class="collapse" role="tabpanel" aria-labelledby="issueListAccMain{{iIndex}}" data-parent="#issueListAccMain{{iIndex}}">
 									<div class="card-body">
-										<div class="status-header">
-											<img src="images/exclamation-mark-emoji.png" width="30" height="30"/>
-										Auto-remediation failed. Remediation strategy not available at this time.
-										</div>
 									<!-- Issue list Details -->
-										<div class="accordion md-accordion" id="issueListAccSub{{iIndex}}" role="tablist" aria-multiselectable="true" style="margin-top: 20px;">
+										<div class="accordion md-accordion" id="issueListAccSub{{iIndex}}" role="tablist" aria-multiselectable="true" style="margin-top: 0px;">
 											<!-- Issue list section -->
 											
 											<!-- Accordion card -->
@@ -265,6 +261,10 @@
 												<!-- Card body -->
 												<div id="issueListAccSubCollapse{{itm.id}}_{{$index}}" class="collapse" role="tabpanel" aria-labelledby="issueListAccSub{{itmIndex}}_{{itm.id}}" data-parent="#issueListAccSub{{itmIndex}}_{{itm.id}}">
 													<div class="card-body">
+										<div class="status-header" style="width:1010px">
+											<img src="images/exclamation-mark-emoji.png" width="30" height="30"/>
+										Remediation strategy not available at this time.
+										</div><br/>
 													<!-- Issue list Details -->
 														<div class="col-md-12 nonvuln" style="width: 100%;">
 															<label for="vuln">Snippet</label>

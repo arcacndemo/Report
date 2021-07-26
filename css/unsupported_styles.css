@@ -154,7 +154,7 @@ html {
   margin-bottom: 0;
   background-color: #FDE0E0;
   border-bottom: 1px solid rgba(0, 0, 0, 0.125);
-  outline: thick solid #FDAAAA;
+  outline: solid #FDAAAA;
 }
 
 .iconexclamation{

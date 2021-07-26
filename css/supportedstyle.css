@@ -186,11 +186,11 @@ html {
   margin-bottom: 0;
   background-color: #E2F0D9;
   border-bottom: 1px solid rgba(0, 0, 0, 0.125);
-  outline: thick solid #A9D18E;
+  outline: solid #A9D18E;
 }
 
 .iconexclamation{
-   width: 30px;
+   width: 35px;
    height: 30px;
    border: none;
    display:inline-block;
