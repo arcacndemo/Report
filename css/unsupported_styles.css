@@ -158,10 +158,10 @@ html {
 }
 
 .iconexclamation{
-   width: 16px;
-   height: 16px;
+   width: 30px;
+   height: 30px;
    border: none;
-
    display:inline-block;
+   float: right;
+   margin: -35px 0px 0px 0px;
 }
-

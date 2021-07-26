@@ -113,6 +113,11 @@
 											</div>
 										</div>
 										<div>&nbsp;</div>
+										<div class="status-header">
+												<img src="images/exclamation-mark-emoji.png" width="30" height="30"/>
+													
+												</div>
+										<div>&nbsp;</div>
 										<div class="row">
 											<div class="col-md-6 vuln">
 												<label for="vuln">Vulnerable code</label>
@@ -236,24 +241,24 @@
 	
 									<!-- Card body -->
 									<div id="issueListAccMainCollapse{{$index}}" class="collapse" role="tabpanel" aria-labelledby="issueListAccMain{{$index}}" data-parent="#issueListAccMain{{$index}}">
-										<div class="card-body">
+										<div class="card-body" ng-repeat = "itm in i.items">
 											<div class="status-header">
 												<img src="images/exclamation-mark-emoji.png" width="30" height="30"/>
-													auto-remediation algorithm not found
+													{{itm.errorMessage}}
 											</div>
 										<!-- Issue list Details -->
 											<div class="accordion md-accordion" id="issueListAccSub{{itm.id}}" role="tablist" aria-multiselectable="true" style="margin-top: 20px;">
 												<!-- Issue list section -->
 												
 												<!-- Accordion card -->
-												<div class="card" ng-repeat = "itm in i.items">
+												<div class="card">
 													<!-- Card header -->
 													<div class="card-header" role="tab" id="issueListAccSub{{itm.id}}">
 														<a data-toggle="collapse" data-parent="#issueListAccSub{{itm.id}}" href="#issueListAccSubCollapse{{itm.id}}_{{$index}}" aria-expanded="true"
 															aria-controls="issueListAccSubCollapse{{itm.id}}_{{$index}}">
 															<h6 class="mb-0">
 																ID: {{itm.id}}&nbsp;&nbsp;&nbsp;&nbsp;Line: {{itm.line}}
-																<img src="images/magnifyingGlassExclamation.png" width="30" height="30" style="float: right; margin: -5px -15px 0px 0px;"/>
+																
 															</h6>
 														</a>
 														</div>
@@ -263,6 +268,9 @@
 														<!-- Issue list Details -->
 															<div class="col-md-12 nonvuln" style="width: 100%;">
 																<label for="nonvuln">Snippet</label>
+																<div>
+																	<img class="iconexclamation" src="images/magnifyingGlass.png"/>
+																</div>
 																<textarea id="issueListAccSubnonvulncode{{itm.id}}_{{$index}}">
 {{htmlDecode(itm.snippet)}}
 																</textarea>
