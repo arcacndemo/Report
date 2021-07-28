@@ -113,8 +113,8 @@
 											</div>
 										</div>
 										<div>&nbsp;</div>
-											<div class="status-header">
-												<img src="images/exclamation-mark-emoji.png" width="30" height="30"/>
+											<div class="alert alert-warning" role="alert">
+												Note: Code samples are taken from the remediation guidelines.
 											</div>
 										<div>&nbsp;</div>
 										<div class="row">
@@ -243,7 +243,7 @@
 										<div class="card-body" ng-repeat = "itm in i.items">
 											
 										<!-- Issue list Details -->
-											<div class="accordion md-accordion" id="issueListAccSub{{itm.id}}" role="tablist" aria-multiselectable="true" style="margin-top: 20px;">
+											<div class="accordion md-accordion" id="issueListAccSub{{itm.id}}" role="tablist" aria-multiselectable="true">
 												<!-- Issue list section -->
 												
 												<!-- Accordion card -->
@@ -336,6 +336,7 @@
 				$scope.files = jsonData.project.failed[_issueName].files;				
 				$scope.mitigations = jsonData.project.failed[_issueName].remediation.remediation.mitigations.mitigation;
 				$scope.recommendations = jsonData.project.failed[_issueName].remediation.remediation.recommendations.recommendation;
+				$scope.errorMsg;
 
 				//filesObj = jsonData.project.supported[_issueName].files;
 				$scope.openTab = openTab;
