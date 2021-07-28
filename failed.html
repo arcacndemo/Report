@@ -260,17 +260,15 @@
 														</div>
 													<!-- Card body -->
 													<div id="issueListAccSubCollapse{{itm.id}}_{{$index}}" class="collapse" role="tabpanel" aria-labelledby="issueListAccSub{{itm.id}}_{{$index}}" data-parent="#issueListAccSub{{itm.id}}">
-											<div class="status-header" style="width:1108px">
-												<img src="images/exclamation-mark-emoji.png" width="30" height="30"/>
-													{{itm.errorMessage}}
-											</div>
+											
 														<div class="card-body">
+														<div class="alert alert-danger">
+															<img src="images/exclamation-mark-emoji.png" width="20" height="20"/>
+																{{itm.errorMessage}}
+														</div>
 														<!-- Issue list Details -->
 															<div class="col-md-12 nonvuln" style="width: 100%;">
-																<label for="nonvuln">Snippet</label>
-																<div>
-																	<img class="iconexclamation" src="images/magnifyingGlass.png"/>
-																</div>
+																<label for="nonvuln">Snippet</label>																
 																<textarea id="issueListAccSubnonvulncode{{itm.id}}_{{$index}}">
 {{htmlDecode(itm.snippet)}}
 																</textarea>
@@ -310,7 +308,6 @@
     <script src="js/bootstrap.min.js"></script>
 	<script src="js/searchcursor.js"></script>	
 	<script src="js/mergely.js"></script>
-	<script src="js/codediff-mergely.js"></script>		
 	<script src="data.json"></script>	
 	<script src="js/utils.js"></script>
 
@@ -336,31 +333,6 @@
 				$scope.files = jsonData.project.failed[_issueName].files;				
 				$scope.mitigations = jsonData.project.failed[_issueName].remediation.remediation.mitigations.mitigation;
 				$scope.recommendations = jsonData.project.failed[_issueName].remediation.remediation.recommendations.recommendation;
-				$scope.errorMsg;
-
-				//filesObj = jsonData.project.supported[_issueName].files;
-				$scope.openTab = openTab;
-				function openTab(evt, cityName) {
-			// Declare all variables
-					var i, tabcontent, tablinks;
-
-					  // Get all elements with class="tabcontent" and hide them
-					  tabcontent = document.getElementsByClassName("tabcontent");
-					  for (i = 0; i < tabcontent.length; i++) {
-						tabcontent[i].style.display = "none";
-					  }
-
-					  // Get all elements with class="tablinks" and remove the class "active"
-					  tablinks = document.getElementsByClassName("tablinks");
-					  for (i = 0; i < tablinks.length; i++) {
-						tablinks[i].className = tablinks[i].className.replace(" active", "");
-					  }
-
-					  // Show the current tab, and add an "active" class to the button that opened the tab
-					  document.getElementById(cityName).style.display = "block";
-					  evt.currentTarget.className += " active";
-					  //codeDiffMerge();
-				}	
 				
 				$scope.codeDiffMerge=codeDiffMerge;
 				function codeDiffMerge(index,originalcode,remediatedcode) {

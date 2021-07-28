@@ -260,16 +260,13 @@
 												<!-- Card body -->
 												<div id="issueListAccSubCollapse{{itm.id}}_{{$index}}" class="collapse" role="tabpanel" aria-labelledby="issueListAccSub{{itmIndex}}_{{itm.id}}" data-parent="#issueListAccSub{{itmIndex}}_{{itm.id}}">
 													<div class="card-body">
-										<div class="status-header" style="width:1010px">
-											<img src="images/exclamation-mark-emoji.png" width="30" height="30"/>
+										<div class="alert alert-danger">
+											<img src="images/exclamation-mark-emoji.png" width="20" height="20"/>
 										Remediation strategy not available at this time.
-										</div><br/>
+										</div>
 													<!-- Issue list Details -->
 														<div class="col-md-12 nonvuln" style="width: 100%;">
-															<label for="vuln">Snippet</label>
-															<div>
-																<img class="iconexclamation" src="images/magnifyingGlass.png"/>
-															</div>
+															<label for="vuln">Snippet</label>														
 															<textarea id="issueListAccSubvulncode{{itm.id}}_{{$index}}">
 {{htmlDecode(itm.snippet)}}
 															</textarea>

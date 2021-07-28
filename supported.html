@@ -259,7 +259,6 @@
     <script src="js/scripts.js"></script>
 	<script src="js/searchcursor.js"></script>	
 	<script src="js/mergely.js"></script>
-	<script src="js/codediff-mergely.js"></script>		
 	<script src="data.json"></script>
 	<script src="js/utils.js"></script>	
 
@@ -293,37 +292,11 @@
 				$scope.files = jsonData.project.supported[_issueName].files;				
 				$scope.mitigations = jsonData.project.supported[_issueName].remediation.remediation.mitigations.mitigation;
 
-				//filesObj = jsonData.project.supported[_issueName].files;
-				$scope.openTab = openTab;
-				function openTab(evt, cityName) {
-			// Declare all variables
-					var i, tabcontent, tablinks;
-
-					  // Get all elements with class="tabcontent" and hide them
-					  tabcontent = document.getElementsByClassName("tabcontent");
-					  for (i = 0; i < tabcontent.length; i++) {
-						tabcontent[i].style.display = "none";
-					  }
-
-					  // Get all elements with class="tablinks" and remove the class "active"
-					  tablinks = document.getElementsByClassName("tablinks");
-					  for (i = 0; i < tablinks.length; i++) {
-						tablinks[i].className = tablinks[i].className.replace(" active", "");
-					  }
-
-					  // Show the current tab, and add an "active" class to the button that opened the tab
-					  document.getElementById(cityName).style.display = "block";
-					  evt.currentTarget.className += " active";
-					  //codeDiffMerge();
-				}	
-
 				$scope.codeDiffMerge=codeDiffMerge;
-				//$scope.mergelyMap = new Map();	
 				function codeDiffMerge(index,originalcode,remediatedcode) {
 					var i, mergelycontent, mergelyfullscreen,mergelyID;
 					originalcode = originalcode.join('\n');
 					remediatedcode = remediatedcode.join('\n');
-					//mergelyID = "mergely"+(index);
 							$('#mergelybody'+index).mergely({
 								license: 'lgpl',
 								cmsettings: {
