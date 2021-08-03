@@ -30,9 +30,17 @@ html {
       background-color:#32CD32;
       color:white
   }
-	.log-highlight{
-      background-color:#2B2B2B;
-      color:#92D050
+.log-highlight{
+	background-color:#2B2B2B;
+      	color:#92D050;
+	width: 100%;
+	text-align:left;
+	font: 12.8px monospace;
+	resize: none;
+	overflow-y: scroll;
+	border: 1px solid grey;
+	padding-top: 0.25rem;
+      	height: 240px;
   }
   
   .red {
