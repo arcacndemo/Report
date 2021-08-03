@@ -289,10 +289,10 @@
 					</div>
 					<!-- Build log tab starts -->	
 					<div class="tab-pane fade" id="buildlogs" role="tabpanel" aria-labelledby="buildlogs-tab">
-						<div class="col-md-12 log" style="width: 100%;">
-							<label for="log">Build Logs</label>
-								<textarea id="buildlogtxt" rows="20" cols="50" style="background-color:#2B2B2B;color:#92D050;">
-										Log details for the failed build
+						<div>Build Logs <div/>
+						<div class="col-md-12" style="width: 100%;">
+							<!--<label for="log">Build Logs</label> -->
+								<textarea  id="buildlogtxt" rows="30" cols="50" class="log-highlight" readOnly>Log details for the failed build
 								</textarea>
 						</div>
 					</div>
@@ -360,7 +360,7 @@
 				$scope.issueListData = jsonData.project.failed[_issueName].files;
 
 				// text area id whitelist
-				var textAreaWhitelist = [];
+				var textAreaWhitelist = ["buildlogtxt"];
 
 				$scope.$watch('$viewContentLoaded', 
 					function() { 
@@ -373,4 +373,11 @@
 
 		});
 	</script>  
+	<script type="text/javascript" src="js/ta-ln.js"></script>
+    	<script type="text/javascript">
+      		var input = document.getElementById("buildlogtxt");
+      
+      		LNPrefix(input);
+      		input.addEventListener("input", LNPrefix.bind(this, input));
+    	</script>
 </html>
