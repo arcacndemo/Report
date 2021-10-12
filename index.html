@@ -72,7 +72,15 @@
 									<a href="" ng-if = "d.remediation == null">{{k}} - <em style="color:red;">No documented remediation details</em></a>
 								</li>
 							</ul>
-						</div>						
+							<div ng-if="failedbuildlog!=null">
+								<div>Build Logs </div>
+								<div class="col-md-12" style="width: 100%;">
+									<!--<label for="log">Build Logs</label> -->
+										<textarea  id="buildlogtxt" rows="30" cols="50" class="log-highlight" readOnly>{{failedbuildlog}}
+										</textarea>
+								</div>
+							</div>
+						</div>												
 					</li>
 				</ul>
 			</div>
@@ -84,6 +92,7 @@
 
 			} );
 		</script>
+		<script src="js/utils.js"></script>
 	</body>
 	<script>
 		var app = angular.module("myapp", []);
@@ -101,6 +110,33 @@
 				}
 					
 				}
+				
+				var failed = jsonData.project.failed;
+				var logvalue = true;
+				var log = [];
+				$scope.failedbuildlog= null;
+				angular.forEach(failed, function(value, key) {
+				if(logvalue){
+					$scope.failedbuildlog=value.files[0].items[0].buildLogs;
+					logvalue=false;
+					}
+				}, log);
+				// text area id whitelist
+				var textAreaWhitelist = ["buildlogtxt"];
+
+				$scope.$watch('$viewContentLoaded', 
+					function() { 
+						$timeout(function() {
+							textAreaFunc(textAreaWhitelist);
+						},0);    
+				});
 		});
 	</script>
+	<script type="text/javascript" src="js/ta-ln.js"></script>
+    	<script type="text/javascript">
+      		var input = document.getElementById("buildlogtxt");
+      
+      		LNPrefix(input);
+      		input.addEventListener("input", LNPrefix.bind(this, input));
+    	</script>
 </html>

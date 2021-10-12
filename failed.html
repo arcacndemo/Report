@@ -17,7 +17,8 @@
 	<script src="js/codemirror.js"></script>
 	<script src="js/javascript.js"></script>
 	<script src="js/autorefresh.js"></script>
-	<script src="js/angular.min.js"></script>		
+	<script src="js/angular.min.js"></script>	
+<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-filter/0.5.8/angular-filter.js"></script>	
 	<link rel="stylesheet" type="text/css" href="css/supportedstyle.css" />
 	<link rel="stylesheet" type="text/css" href="css/unsupported_styles.css"/>
 
@@ -226,21 +227,21 @@
 								<!-- Issue list section -->
 								
 								<!-- Accordion card -->
-								<div class="card" ng-repeat = "i in issueListData">
+								<div class="card" ng-repeat = "(key, value) in issueListData | groupBy: 'file'">
 	
 									<!-- Card header -->
 									<div class="card-header" role="tab" id="issueListAccMain{{$index}}">
 									<a data-toggle="collapse" data-parent="#issueListAccMain{{$index}}" href="#issueListAccMainCollapse{{$index}}" aria-expanded="true"
 										aria-controls="issueListAccMainCollapse{{$index}}">
 										<h6 class="mb-0">
-											File: {{i.file}}
-										</h6>
+											File: {{key}}
+										</h6>										
 									</a>
 									</div>
 	
 									<!-- Card body -->
 									<div id="issueListAccMainCollapse{{$index}}" class="collapse" role="tabpanel" aria-labelledby="issueListAccMain{{$index}}" data-parent="#issueListAccMain{{$index}}">
-										<div class="card-body" ng-repeat = "itm in i.items">
+										<div class="card-body" ng-repeat = "itm in value">
 											
 										<!-- Issue list Details -->
 											<div class="accordion md-accordion" id="issueListAccSub{{itm.id}}" role="tablist" aria-multiselectable="true">
@@ -253,7 +254,7 @@
 														<a data-toggle="collapse" data-parent="#issueListAccSub{{itm.id}}" href="#issueListAccSubCollapse{{itm.id}}_{{$index}}" aria-expanded="true"
 															aria-controls="issueListAccSubCollapse{{itm.id}}_{{$index}}">
 															<h6 class="mb-0">
-																ID: {{itm.id}}&nbsp;&nbsp;&nbsp;&nbsp;Line: {{itm.line}}
+																ID: {{itm.items[0].id}}&nbsp;&nbsp;&nbsp;&nbsp;Line: {{itm.items[0].line}}
 																
 															</h6>
 														</a>
@@ -264,13 +265,13 @@
 														<div class="card-body">
 														<div class="alert alert-danger">
 															<img src="images/exclamation-mark-emoji.png" width="20" height="20"/>
-																{{itm.errorMessage}}
+																{{itm.items[0].errorMessage}}
 														</div>
 														<!-- Issue list Details -->
 															<div class="col-md-12 nonvuln" style="width: 100%;">
 																<label for="nonvuln">Snippet</label>																
 																<textarea id="issueListAccSubnonvulncode{{itm.id}}_{{$index}}">
-{{htmlDecode(itm.snippet)}}
+{{htmlDecode(itm.items[0].snippet)}}
 																</textarea>
 															</div>
 														<!-- Issue list Details -->
@@ -292,7 +293,7 @@
 						<div>Build Logs <div/>
 						<div class="col-md-12" style="width: 100%;">
 							<!--<label for="log">Build Logs</label> -->
-								<textarea  id="buildlogtxt" rows="30" cols="50" class="log-highlight" readOnly>Log details for the failed build
+								<textarea  id="buildlogtxt" rows="30" cols="50" class="log-highlight" readOnly>{{buildLogs}}
 								</textarea>
 						</div>
 					</div>
@@ -313,7 +314,7 @@
 
   </body>
 	<script>
-		var app = angular.module("myapp", []);
+		var app = angular.module("myapp", ['angular.filter']);
 			app.controller("FailedObject", function($timeout, $scope) {				
 				var url = new URL(window.location.href);
 				_issueName = url.searchParams.get("vuln");
@@ -358,6 +359,7 @@
 				}
 
 				$scope.issueListData = jsonData.project.failed[_issueName].files;
+				$scope.buildLogs = jsonData.project.failed[_issueName].files[0].items[0].buildLogs;
 
 				// text area id whitelist
 				var textAreaWhitelist = ["buildlogtxt"];
