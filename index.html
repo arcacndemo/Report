@@ -23,6 +23,10 @@
 		<script src="js/searchcursor.js"></script>	
 		<script src="js/mergely.js"></script>
 		<script src="data.json"></script>
+<style>
+	a.hoverable:hover{text-decoration: underline}
+</style>		
+		
 	</head>
 	
 	<body ng-app="myapp" ng-controller="ReportObject">
@@ -34,7 +38,8 @@
 		<div class="container" ng-if=isdataloaded>
 			<header class="clearfix">
 				
-				<h1 ng-bind="data.project.name" style="text-align: center;"></h1>
+				<h1>Project&nbsp;:&nbsp;</hl><h1 ng-bind="data.project.name"></h1><br>
+				<h1 style="position: absolute;margin-top: 20px;">Branch&nbsp;:&nbsp;</h1><h1 style="margin-left: 102px;position: fixed;margin-top: 20px;" ng-bind="data.project.branch"></h1>
 				
 			</header>	
 			<div class="main" id="report">
@@ -71,16 +76,13 @@
 									<a href="failed.html?vuln={{k}}" target="_blank" ng-if = "d.remediation != null">{{k}}</a>
 									<a href="" ng-if = "d.remediation == null">{{k}} - <em style="color:red;">No documented remediation details</em></a>
 								</li>
-							</ul>
-							<div ng-if="failedbuildlog!=null">
-								<div>Build Logs </div>
-								<div class="col-md-12" style="width: 100%;">
-									<!--<label for="log">Build Logs</label> -->
-										<textarea  id="buildlogtxt" rows="30" cols="50" class="log-highlight" readOnly>{{failedbuildlog}}
-										</textarea>
-								</div>
-							</div>
+							</ul>							
 						</div>												
+					</li>
+					<li>
+						<div ng-if="failedbuildlog!=null">
+							<h3 class="cbp-nttrigger"><a href="logs.html" target="_blank" style="color:#47a3da" class="hoverable">Build Logs</a></h3>
+						</div>
 					</li>
 				</ul>
 			</div>
@@ -114,13 +116,13 @@
 				var failed = jsonData.project.failed;
 				var logvalue = true;
 				var log = [];
-				$scope.failedbuildlog= null;
-				angular.forEach(failed, function(value, key) {
+				$scope.failedbuildlog= jsonData.project.buildLogs;
+				/*angular.forEach(failed, function(value, key) {
 				if(logvalue){
 					$scope.failedbuildlog=value.files[0].items[0].buildLogs;
 					logvalue=false;
 					}
-				}, log);
+				}, log);*/
 				// text area id whitelist
 				var textAreaWhitelist = ["buildlogtxt"];
 
